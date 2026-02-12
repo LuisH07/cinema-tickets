@@ -56,20 +56,13 @@ export class AuthService {
                 body: JSON.stringify(userData),
             });
 
-            const data = await response.json();
-            console.log(response)
-            console.log(data)
+            const data = await response.json().catch(() => ({}));
+            
             if (!response.ok) {
-              if (data.errors && data.errors.length > 0) {
-                  console.log('--- ERRO DE VALIDAÇÃO NO BACKEND ---');
-                  data.errors.forEach((err: any) => {
-                      console.error(`Campo: ${err.field} | Mensagem: ${err.defaultMessage}`);
-                  });
-                  // Lança o erro com a mensagem específica do primeiro campo
-                  throw new Error(`${data.errors[0].field}: ${data.errors[0].defaultMessage}`);
-              }
-                const errorMessage = data.message || this.getErrorMessage(response.status);
-                throw new Error(errorMessage);
+              return { 
+                success: false, 
+                message: data.message || data.errors?.[0]?.defaultMessage || 'Erro no servidor' 
+              };
             }
 
             return { success: true };

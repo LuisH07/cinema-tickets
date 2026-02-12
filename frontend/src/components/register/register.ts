@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/service/auth-service';
@@ -103,6 +103,8 @@ export class Register {
   registerForm: FormGroup;
   isLoading = false;
 
+  private cdr = inject(ChangeDetectorRef);
+
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
@@ -140,15 +142,19 @@ export class Register {
         });
         this.router.navigate(['/']); // Redireciona para o login
       } else {
+        this.isLoading = false;
+
         Swal.fire({
           icon: 'error',
           title: 'Ops...',
           text: "Não foi possível realizar o cadastro",
           confirmButtonColor: '#c91432',
         });
-        this.router.navigate(['/cadastro']);
+        
       }
     } catch (e) {
+      this.isLoading = false;
+
       Swal.fire({
         icon: 'error',
         title: 'Erro',
@@ -157,6 +163,7 @@ export class Register {
       });
     } finally {
       this.isLoading = false;
+      this.cdr.detectChanges();
     }
   }
 }
