@@ -1,0 +1,29 @@
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.home-container {
+    min-height: 81.1vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(180deg, #FFFFFF 0%, #959292 100%);
+    box-sizing: border-box;
+}
+
+.welcome-message {
+    font-size: 50px;
+    font-family:'Arial', sans-serif;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.warning-message {
+    font-size: 30px;
+    font-family:'Arial', sans-serif;
+    text-align: center;
+    color: red;
+}
