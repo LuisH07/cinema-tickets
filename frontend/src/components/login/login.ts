@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
           <form class="form-login" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <label>E-mail:</label>
             <div class="input-group">
-              <input type="email" placeholder="cinematickets123@gmail.com" formControlName="email" [class.loading]="isLoading">
+              <input type="email" placeholder="tickets@email.com" formControlName="email" [class.loading]="isLoading">
               <div *ngIf="email?.invalid && email?.touched" class="error-messages">
                 <small *ngIf="email?.errors?.['required']">Email é obrigatório!</small>
                 <small *ngIf="email?.errors?.['email']">Email inválido!</small>
@@ -29,7 +29,7 @@ import Swal from 'sweetalert2';
             </div>
             <label>Senha:</label>
             <div class="input-group">
-              <input type="password" placeholder="Senha_Super_Secreta" formControlName="password" [class.loading]="isLoading">
+              <input type="password" placeholder="••••••••••" formControlName="password" [class.loading]="isLoading">
               <div *ngIf="password?.invalid && password?.touched" class="error-messages">
                 <small *ngIf="password?.errors?.['required']">Senha é obrigatória!</small>
                 <small *ngIf="password?.errors?.['minlength']">
