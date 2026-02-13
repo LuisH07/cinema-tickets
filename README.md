@@ -85,10 +85,26 @@ Atualmente, o projeto encontra-se em sua **fase inicial**, contendo apenas:
 * Git
 
 ### Backend
+ 
+Crie um arquivo `application-dev.yaml` com as seguintes informações (exemplo):
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cinema_tickets
+    username: cinema_app
+    password: password
+
+jwt:
+  secret: "rjfoBSJbdo2DWCXzgWw42ug9VndCxurWHfAh71kq36o="
+  expiration: 86400000
+```
+
+Depois rode o backend com o seguinte comando:
 
 ```bash
 cd backend
-./mvnw spring-boot:run
+./mvnw spring-boot:run "-Dspring-boot.run.profiles=dev"
 ```
 
 A aplicação será iniciada utilizando o método `main()` da classe principal.
