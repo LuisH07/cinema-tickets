@@ -1,10 +1,13 @@
 spring:
+  application:
+    name: cinema-tickets-backend
+    
   datasource:
-    url: jdbc:postgresql://localhost:5432/cinema_tickets
-    username: cinema_app
-    password: password
+    url: ${DATABASE_URL} # Placeholder | jdbc:postgresql://localhost:PORTA/cinema_tickets
+    username: ${DATABASE_USERNAME} # Placeholder
+    password: ${DATABASE_PASSWORD} # Placeholder
     driver-class-name: org.postgresql.Driver
-  
+    
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,8 +17,5 @@ spring:
         format_sql: true
 
 jwt:
-  secret: "rjfoBSJbdo2DWCXzgWw42ug9VndCxurWHfAh71kq36o="
-  expiration: 86400000
-
-server:
-  port: 8080
+  secret: ${JWT_SECRET} # Placeholder
+  expiration: 86400000  # 24 horas em milissegundos
