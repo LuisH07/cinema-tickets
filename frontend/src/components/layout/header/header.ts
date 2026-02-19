@@ -13,10 +13,12 @@ import { RouterModule } from '@angular/router';
               <img src="ticket.png" class="logo-img">
               <h1 class="logo-title">Cinema-Tickets</h1>
           </a>
-          <button *ngIf="authService.authStatus$ | async" type="button" class="logout-button" (click)="onLogout()">
-            <span class="logout-text"> Sair </span>
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-          </button>
+          @if (authService.authStatus$ | async) {
+            <button type="button" class="logout-button" (click)="onLogout()">
+              <span class="logout-text"> Sair </span>
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+          } 
       </div>
     </header>
   `,
