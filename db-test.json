@@ -5,29 +5,29 @@
     { "id": "3", "nome": "Sala 03 - 3D", "capacidade": 80 }
   ],
   "sessoes": [
-    { "id": "1", "filmeId": "278", "salaId": "1", "data": "2026-02-19", "horario": "14:00", "tipo": "Legendado" },
-    { "id": "9", "filmeId": "278", "salaId": "1", "data": "2026-02-19", "horario": "17:00", "tipo": "Legendado" },
+    { "id": "1", "filmeId": "278", "salaId": "1", "inicio": "2026-02-19T14:00:00", "tipo": "Legendado" },
+    { "id": "9", "filmeId": "278", "salaId": "1", "inicio": "2026-02-19T17:00:00", "tipo": "Legendado" },
     
-    { "id": "2", "filmeId": "238", "salaId": "2", "data": "2026-02-19", "horario": "15:30", "tipo": "Legendado" },
-    { "id": "10", "filmeId": "238", "salaId": "2", "data": "2026-02-20", "horario": "15:30", "tipo": "Legendado" },
+    { "id": "2", "filmeId": "238", "salaId": "2", "inicio": "2026-02-19T15:30:00", "tipo": "Legendado" },
+    { "id": "10", "filmeId": "238", "salaId": "2", "inicio": "2026-02-20T15:30:00", "tipo": "Legendado" },
     
-    { "id": "3", "filmeId": "155", "salaId": "1", "data": "2026-02-19", "horario": "18:00", "tipo": "Dublado" },
+    { "id": "3", "filmeId": "155", "salaId": "1", "inicio": "2026-02-19T18:00:00", "tipo": "Dublado" },
     
-    { "id": "4", "filmeId": "129", "salaId": "3", "data": "2026-02-19", "horario": "13:00", "tipo": "Dublado" },
-    { "id": "11", "filmeId": "129", "salaId": "3", "data": "2026-02-19", "horario": "16:00", "tipo": "Dublado" },
-    { "id": "12", "filmeId": "129", "salaId": "3", "data": "2026-02-20", "horario": "13:00", "tipo": "Dublado" },
+    { "id": "4", "filmeId": "129", "salaId": "3", "inicio": "2026-02-19T13:00:00", "tipo": "Dublado" },
+    { "id": "11", "filmeId": "129", "salaId": "3", "inicio": "2026-02-19T16:00:00", "tipo": "Dublado" },
+    { "id": "12", "filmeId": "129", "salaId": "3", "inicio": "2026-02-20T13:00:00", "tipo": "Dublado" },
     
-    { "id": "5", "filmeId": "496243", "salaId": "2", "data": "2026-02-19", "horario": "20:00", "tipo": "Legendado" },
-    { "id": "13", "filmeId": "496243", "salaId": "2", "data": "2026-02-19", "horario": "22:30", "tipo": "Legendado" },
+    { "id": "5", "filmeId": "496243", "salaId": "2", "inicio": "2026-02-19T20:00:00", "tipo": "Legendado" },
+    { "id": "13", "filmeId": "496243", "salaId": "2", "inicio": "2026-02-19T22:30:00", "tipo": "Legendado" },
     
-    { "id": "6", "filmeId": "122", "salaId": "1", "data": "2026-02-20", "horario": "19:00", "tipo": "Legendado" },
-    { "id": "14", "filmeId": "122", "salaId": "1", "data": "2026-02-20", "horario": "21:30", "tipo": "Legendado" },
-    { "id": "15", "filmeId": "122", "salaId": "1", "data": "2026-02-21", "horario": "19:00", "tipo": "Legendado" },
+    { "id": "6", "filmeId": "122", "salaId": "1", "inicio": "2026-02-20T19:00:00", "tipo": "Legendado" },
+    { "id": "14", "filmeId": "122", "salaId": "1", "inicio": "2026-02-20T21:30:00", "tipo": "Legendado" },
+    { "id": "15", "filmeId": "122", "salaId": "1", "inicio": "2026-02-21T19:00:00", "tipo": "Legendado" },
     
-    { "id": "7", "filmeId": "424", "salaId": "3", "data": "2026-02-20", "horario": "16:00", "tipo": "Legendado" },
+    { "id": "7", "filmeId": "424", "salaId": "3", "inicio": "2026-02-20T16:00:00", "tipo": "Legendado" },
     
-    { "id": "8", "filmeId": "497", "salaId": "3", "data": "2026-02-21", "horario": "20:00", "tipo": "Dublado" },
-    { "id": "16", "filmeId": "497", "salaId": "3", "data": "2026-02-22", "horario": "20:00", "tipo": "Dublado" }
+    { "id": "8", "filmeId": "497", "salaId": "3", "inicio": "2026-02-21T20:00:00", "tipo": "Dublado" },
+    { "id": "16", "filmeId": "497", "salaId": "3", "inicio": "2026-02-22T20:00:00", "tipo": "Dublado" }
   ],
   "filmes": [
     {
