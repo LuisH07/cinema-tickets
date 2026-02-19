@@ -7,6 +7,6 @@ import lombok.Getter;
 @Builder
 public class SalaResponseDTO {
     private Long id;
-    private Integer numero;
-    private Integer capacidade;
+    private String nome;
+    private int capacidade;
 }

@@ -1,11 +1,11 @@
 package com.es.cinema.tickets.web.dto.request;
 
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Getter
 public class SessaoRequestDTO {
@@ -16,12 +16,10 @@ public class SessaoRequestDTO {
     @NotNull(message = "Sala é obrigatória")
     private Long salaId;
 
-    @NotNull(message = "Data é obrigatória")
-    private LocalDate data;
+    @Future
+    @NotNull(message = "Início é obrigatório")
+    private LocalDateTime inicio; // ex: "2026-02-19T19:30:00"
 
-    @NotNull(message = "Horário é obrigatório")
-    private LocalTime horario;
-
-    @NotBlank(message = "Classificação é obrigatória")
-    private String classificacao;
+    @NotBlank(message = "Tipo é obrigatório")
+    private String tipo;
 }
