@@ -53,11 +53,31 @@
 	box-shadow: 0px 4px 8px rgba(211, 47, 47, 0.2);
 }
 
-.logout-button i {
+.login-button {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 8px 24px;
+	background-color: transparent;
+	border: 2px solid var(--secondary-color);
+	border-radius: 50px;
+	color: var(--secondary-color);
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.login-button:hover {
+	background-color: var(--secondary-color);
+	color: white;
+	transform: translateY(-2px);
+	box-shadow: 0px 4px 8px rgba(150, 95, 14, 0.2);
+}
+
+.logout-button i, .login-button i {
 	font-size: 1rem;
 }
 
-.logout-text {
+.logout-text, .login-text {
 	font-weight: 600;
 	font-size: 1rem;
 	font-family: sans-serif;

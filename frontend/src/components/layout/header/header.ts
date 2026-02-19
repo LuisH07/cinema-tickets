@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../auth/service/auth-service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +18,12 @@ import { RouterModule } from '@angular/router';
               <span class="logout-text"> Sair </span>
               <i class="fa-solid fa-arrow-right-from-bracket"></i>
             </button>
-          } 
+          } @else if (router.url !== '/login') {
+            <button type ="button" class="login-button" [routerLink]="['/login']">
+              <span class="login-text"> Entrar </span>
+              <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </button>
+          }
       </div>
     </header>
   `,
@@ -28,6 +33,7 @@ export class Header {
 
   constructor(
     public authService: AuthService,
+    public router: Router,
   ) {}
 
 

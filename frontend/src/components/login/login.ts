@@ -58,7 +58,7 @@ export class Login {
 
   isLoading = false;
 
-  constructor(private fb: FormBuilder){
+  constructor(private fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -73,7 +73,7 @@ export class Login {
     return this.loginForm.get('password');
   }
 
-  async onSubmit(){
+  async onSubmit() {
     if(this.isLoading || this.loginForm.invalid){
       if (this.loginForm.invalid) {
         this.loginForm.markAllAsTouched();
@@ -89,7 +89,7 @@ export class Login {
       const result = await this.authService.login(email, password);
 
       if(result.success){
-        this.router.navigate(['/home']);
+        this.router.navigate(['']);
       } else {
         Swal.fire({
           icon: 'error',
