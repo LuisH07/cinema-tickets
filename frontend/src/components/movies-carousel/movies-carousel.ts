@@ -9,7 +9,6 @@ import { RouterModule } from '@angular/router';
   <div class="carousel-container">
     <div class="carousel-header">
       <h2>Filmes em Cartaz</h2>
-      <!-- Só mostra os botões se tiver mais de 4 filmes -->
       <div class="carousel-controls" *ngIf="sortedMovies.length > 4">
         <button class="carousel-nav" 
                 (click)="scrollLeft()" 
@@ -28,10 +27,10 @@ import { RouterModule } from '@angular/router';
       <div class="cards-container" #carouselContainer (scroll)="updateScrollButtons()">
         <div *ngFor="let movie of sortedMovies" class="movie-card">
           
-          <img [src]="getPoster(movie.id)" [alt]="movie.title" class="movie-poster">
+          <img [src]="getPoster(movie.id)" [alt]="movie.titulo" class="movie-poster">
           
           <div class="movie-info">
-            <h3 class="movie-title">{{ movie.title }}</h3>
+            <h3 class="movie-title">{{ movie.titulo }}</h3>
             
             <div class="movie-meta">
               <span class="rating" [style.backgroundColor]="getRatingColor(movie.classificacao)">
@@ -128,7 +127,7 @@ export class MoviesCarousel implements AfterViewInit, OnChanges {
 
   getPoster(movieId: string): string {
     const movie = this.movieMap.get(movieId);
-    return movie?.poster ? `images/${movie.poster}` : 'images/placeholder.jpg';
+    return movie?.poster ? `${movie.poster}` : 'images/placeholder.jpg';
   }
 
   getRoom(roomId: string): string {

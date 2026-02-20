@@ -23,10 +23,13 @@ public class FilmeService {
 
     @Transactional(readOnly = true)
     public List<FilmeResponse> listarTodos() {
-        return filmeRepository.findAll()
-                .stream()
-                .map(filmeMapper::toResponse)
-                .toList();
+        List<Filme> filmes = filmeRepository.findAllWithGeneros();
+        filmes = filmeRepository.findAllWithDiretores();
+        filmes = filmeRepository.findAllWithElenco();
+        
+        return filmes.stream()
+            .map(filmeMapper::toResponse)
+            .toList();
     }
 
     @Transactional(readOnly = true)
