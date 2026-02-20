@@ -6,7 +6,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
-@Table(name = "assentos_sessao")
+@Table(
+        name = "assentos_sessao",
+        uniqueConstraints = @UniqueConstraint(
+            name = "uk_assento_sessao_codigo",
+            columnNames = {"sessao_id", "codigo"}
+    )
+)
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

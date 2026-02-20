@@ -3,35 +3,38 @@ package com.es.cinema.tickets.web.mapper;
 import com.es.cinema.tickets.persistence.entity.Filme;
 import com.es.cinema.tickets.persistence.entity.Sala;
 import com.es.cinema.tickets.persistence.entity.Sessao;
-import com.es.cinema.tickets.web.dto.request.SessaoRequestDTO;
-import com.es.cinema.tickets.web.dto.response.SessaoResponseDTO;
+import com.es.cinema.tickets.web.dto.request.SessaoRequest;
+import com.es.cinema.tickets.web.dto.response.SessaoResponse;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+@Component
 public class SessaoMapper {
 
-    private SessaoMapper() {
-    }
-
-    public static Sessao toEntity(SessaoRequestDTO dto, Filme filme, Sala sala) {
+    public Sessao toEntity(SessaoRequest request, Filme filme, Sala sala) {
         return Sessao.builder()
-                .data(dto.getData())
-                .horario(dto.getHorario())
-                .classificacao(dto.getClassificacao())
                 .filme(filme)
                 .sala(sala)
+                .inicio(request.getInicio())
+                .tipo(request.getTipo())
                 .build();
     }
 
-    public static SessaoResponseDTO toResponseDTO(Sessao sessao) {
-        return SessaoResponseDTO.builder()
+    public SessaoResponse toResponse(Sessao sessao) {
+        return SessaoResponse.builder()
                 .id(sessao.getId())
-                .data(sessao.getData())
-                .horario(sessao.getHorario())
-                .classificacao(sessao.getClassificacao())
                 .filmeId(sessao.getFilme().getId())
-                .filmeTitulo(sessao.getFilme().getTitulo())
                 .salaId(sessao.getSala().getId())
-                .salaNumero(sessao.getSala().getNumero())
-                .totalAssentos(sessao.getAssentos().size())
+                .inicio(sessao.getInicio())
+                .tipo(sessao.getTipo())
                 .build();
     }
+
+    public List<SessaoResponse> toResponseList(List<Sessao> sessoes) {
+        return sessoes.stream()
+                .map(this::toResponse)
+                .toList();
+    }
 }
+

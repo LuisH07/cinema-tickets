@@ -5,10 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "sessoes")
@@ -23,18 +20,6 @@ public class Sessao {
     private Long id;
 
     @NotNull
-    @Column(nullable = false)
-    private LocalDate data;
-
-    @NotNull
-    @Column(nullable = false)
-    private LocalTime horario;
-
-    @NotBlank
-    @Column(nullable = false)
-    private String classificacao;
-
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "filme_id", nullable = false)
     private Filme filme;
@@ -44,13 +29,17 @@ public class Sessao {
     @JoinColumn(name = "sala_id", nullable = false)
     private Sala sala;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "sessao", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AssentoSessao> assentos = new ArrayList<>();
+    @NotNull
+    @Column(nullable = false)
+    private LocalDateTime inicio;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String tipo;
 
     @Override
     public String toString() {
-        return "Sessao{id=" + id + ", data=" + data + ", horario=" + horario + "}";
+        return "Sessao{id=" + id + ", inicio=" + inicio + "}";
     }
 
     @Override
