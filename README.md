@@ -286,9 +286,12 @@ GET http://localhost:8080/sessoes?data=2026-03-01
 
 ## Instruções de Uso
 
-No estado atual, o projeto não possui funcionalidades de uso final, servindo apenas como **base estrutural** para o desenvolvimento futuro.
+No profile dev, há um perfil de Admin cadastrado, com credenciais:
 
-As instruções de uso serão atualizadas conforme novas funcionalidades forem implementadas.
+email: admin@local.dev
+password: admin1
+
+Use esse **login** para utilizar a funcionalidade de cadastrar Sessões.
 
 ---
 
