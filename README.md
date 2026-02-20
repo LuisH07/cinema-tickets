@@ -80,13 +80,24 @@ Atualmente, o projeto encontra-se em sua **fase inicial**, contendo apenas:
 ### Pré-requisitos
 
 * Java 21 ou superior
+* PostgreSQL
 * Node.js (LTS)
 * npm
 * Git
 
+### Banco de Dados
+
+Antes de rodar o backend, é necessário criar o banco de dados e o usuário no PostgreSQL. Conecte-se ao PostgreSQL como superusuário e execute:
+
+```sql
+CREATE USER cinema_app WITH PASSWORD 'password';
+CREATE DATABASE cinema_tickets OWNER cinema_app;
+GRANT ALL PRIVILEGES ON DATABASE cinema_tickets TO cinema_app;
+```
+
 ### Backend
  
-Crie um arquivo `application-dev.yaml` com as seguintes informações (exemplo):
+O projeto já possui um arquivo `application-dev.yaml` em `backend/src/main/resources/` configurado com os valores padrão. Caso tenha usado credenciais diferentes, edite o arquivo antes de prosseguir:
 
 ```yaml
 spring:
@@ -100,14 +111,21 @@ jwt:
   expiration: 86400000
 ```
 
-Depois rode o backend com o seguinte comando:
+Acesse a pasta `backend` e rode o projeto com o perfil `dev`:
 
+**Linux / macOS:**
+```bash
+cd backend
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
+**Windows:**
 ```bash
 cd backend
 ./mvnw spring-boot:run "-Dspring-boot.run.profiles=dev"
 ```
 
-A aplicação será iniciada utilizando o método `main()` da classe principal.
+A API estará disponível em `http://localhost:8080`.
 
 ### Frontend
 
@@ -121,6 +139,147 @@ A aplicação estará disponível em:
 
 ```
 http://localhost:4200
+```
+
+---
+
+## Mapeamento de Endpoints
+
+A base da URL da API é `http://localhost:8080`. Todos os endpoints estão listados abaixo.
+
+### Autenticação — `/auth`
+
+| Método | Endpoint | Descrição | Autenticação |
+|--------|----------|-----------|--------------|
+| `POST` | `/auth/register` | Cadastra um novo usuário | Não |
+| `POST` | `/auth/login` | Realiza login e retorna o token JWT | Não |
+
+**Corpo de `/auth/register`:**
+```json
+{
+  "email": "usuario@email.com",
+  "password": "senha123",
+  "nome": "Nome Completo",
+  "cpf": "12345678900",
+  "celular": "81999999999"
+}
+```
+
+**Corpo de `/auth/login`:**
+```json
+{
+  "email": "usuario@email.com",
+  "password": "senha123"
+}
+```
+
+**Resposta de `/auth/login`:**
+```json
+{
+  "accessToken": "<jwt>",
+  "tokenType": "Bearer",
+  "expiresIn": 86400000
+}
+```
+
+---
+
+### Filmes — `/filmes`
+
+| Método | Endpoint | Descrição | Autenticação |
+|--------|----------|-----------|--------------|
+| `GET` | `/filmes` | Lista todos os filmes | Não |
+| `GET` | `/filmes/{id}` | Retorna um filme pelo ID | Não |
+
+**Exemplo de resposta:**
+```json
+{
+  "id": 1,
+  "titulo": "Nome do Filme",
+  "poster": "https://url-da-imagem.jpg",
+  "backdrop": "https://url-do-backdrop.jpg",
+  "classificacao": "14",
+  "duracao": 120,
+  "generos": ["Ação", "Aventura"],
+  "diretores": ["Nome do Diretor"],
+  "sinopse": "Descrição do filme...",
+  "elenco": ["Ator 1", "Ator 2"],
+  "status": "EM_CARTAZ"
+}
+```
+
+---
+
+### Salas — `/salas`
+
+| Método | Endpoint | Descrição | Autenticação |
+|--------|----------|-----------|--------------|
+| `GET` | `/salas` | Lista todas as salas | Não |
+| `GET` | `/salas/{id}` | Retorna uma sala pelo ID | Não |
+
+**Exemplo de resposta:**
+```json
+{
+  "id": 1,
+  "nome": "Sala 1",
+  "capacidade": 100
+}
+```
+
+---
+
+### Sessões — `/sessoes`
+
+| Método | Endpoint | Descrição | Autenticação |
+|--------|----------|-----------|--------------|
+| `POST` | `/sessoes` | Cria uma nova sessão | Sim |
+| `GET` | `/sessoes?data=YYYY-MM-DD` | Lista sessões por data | Não |
+| `GET` | `/sessoes/{id}` | Retorna uma sessão pelo ID | Não |
+
+**Corpo de `POST /sessoes`:**
+```json
+{
+  "filmeId": 1,
+  "salaId": 2,
+  "inicio": "2026-03-01T19:30:00",
+  "tipo": "2D"
+}
+```
+
+**Exemplo de resposta:**
+```json
+{
+  "id": 1,
+  "filmeId": 1,
+  "salaId": 2,
+  "inicio": "2026-03-01T19:30:00",
+  "tipo": "2D"
+}
+```
+
+**Exemplo de requisição `GET /sessoes?data=2026-03-01`:**
+```
+GET http://localhost:8080/sessoes?data=2026-03-01
+```
+
+**Exemplo de resposta:**
+```json
+[
+  {
+    "id": 1,
+    "filmeId": 1,
+    "salaId": 2,
+    "inicio": "2026-03-01T14:00:00",
+    "tipo": "2D"
+  },
+  {
+    "id": 2,
+    "filmeId": 1,
+    "salaId": 3,
+    "inicio": "2026-03-01T19:30:00",
+    "tipo": "3D"
+  }
+]
 ```
 
 ---

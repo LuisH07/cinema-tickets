@@ -73,10 +73,10 @@ import { NgxMaskDirective } from 'ngx-mask';
               <div class="form-col">
                 <label>Senha<span class="required">*</span>:</label>
                 <div class="input-group">
-                  <input type="password" placeholder="••••••••••" formControlName="senha" [class.loading]="isLoading">
-                  <div *ngIf="senha?.invalid && senha?.touched" class="error-messages">
-                    <small *ngIf="senha?.errors?.['required']">A senha é obrigatória!</small>
-                    <small *ngIf="senha?.errors?.['minlength']">Mínimo de 6 caracteres</small>
+                  <input type="password" placeholder="••••••••••" formControlName="password" [class.loading]="isLoading">
+                  <div *ngIf="password?.invalid && password?.touched" class="error-messages">
+                    <small *ngIf="password?.errors?.['required']">A senha é obrigatória!</small>
+                    <small *ngIf="password?.errors?.['minlength']">Mínimo de 6 caracteres</small>
                   </div>
                 </div>
               </div>
@@ -109,16 +109,15 @@ export class Register {
     this.registerForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      senha: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       celular: [''],
-      cpf: ['', [Validators.required, Validators.pattern(/^[0-9]{11}$/)]],
-      role: ['USER']
+      cpf: ['', [Validators.required, Validators.pattern(/^[0-9]{11}$/)]]
     });
   }
 
   get nome() { return this.registerForm.get('nome'); }
   get email() { return this.registerForm.get('email'); }
-  get senha() { return this.registerForm.get('senha'); }
+  get password() { return this.registerForm.get('password'); }
   get celular() { return this.registerForm.get('celular'); }
   get cpf() { return this.registerForm.get('cpf'); }
 
@@ -132,13 +131,14 @@ export class Register {
 
     try {
       const result = await this.authService.register(this.registerForm.value);
+      const errorMsg = result.message?.includes("could") ? "CPF já cadastrado!" : result.message;
 
       if (result.success) {
         await Swal.fire({
           icon: 'success',
           title: 'Sucesso!',
           text: 'Sua conta no Cinema Tickets foi criada!',
-          confirmButtonColor: '#c91432',
+          confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--success').trim(),
         });
         this.router.navigate(['/']); // Redireciona para o login
       } else {
@@ -147,8 +147,8 @@ export class Register {
         Swal.fire({
           icon: 'error',
           title: 'Ops...',
-          text: "Não foi possível realizar o cadastro",
-          confirmButtonColor: '#c91432',
+          text: errorMsg,
+          confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--danger').trim(),
         });
         
       }
@@ -159,7 +159,7 @@ export class Register {
         icon: 'error',
         title: 'Erro',
         text: 'Não foi possível conectar ao servidor.',
-        confirmButtonColor: '#c91432',
+        confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--danger').trim(),
       });
     } finally {
       this.isLoading = false;

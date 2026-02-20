@@ -2,10 +2,6 @@
 .env
 .env.*
 !.env.example
-application-local.yml
-application-local.yaml
-application-dev.yml
-application-dev.yaml
 
 # BUILD
 target/
@@ -35,11 +31,6 @@ Thumbs.db
 
 # Mac
 .DS_Store
-
-# BANCO LOCAL / DUMPS
-*.sql
-*.dump
-*.backup
 
 # ANGULAR / NODE
 node_modules/

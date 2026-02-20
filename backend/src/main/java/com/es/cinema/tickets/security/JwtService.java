@@ -1,6 +1,7 @@
 package com.es.cinema.tickets.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -21,7 +22,7 @@ public class JwtService {
     private String secretKey;
 
     @Value("${jwt.expiration}")
-    private Long jwtExpiration;
+    private long jwtExpirationMs;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -36,26 +37,29 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        long now = System.currentTimeMillis();
 
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .setIssuedAt(new Date(now))
+                .setExpiration(new Date(now + jwtExpirationMs))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        Claims claims = extractAllClaims(token);
+        String username = claims.getSubject();
+        Date expiration = claims.getExpiration();
+
+        if (username == null || expiration == null) return false;
+        if (!username.equals(userDetails.getUsername())) return false;
+
+        return expiration.after(new Date());
     }
 
-    private boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
-    }
-
-    private Claims extractAllClaims(String token) {
+    private Claims extractAllClaims(String token) throws JwtException, IllegalArgumentException {
         return Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
@@ -69,7 +73,6 @@ public class JwtService {
     }
 
     public long getExpirationSeconds() {
-        return jwtExpiration / 1000;
+        return jwtExpirationMs / 1000;
     }
-
 }

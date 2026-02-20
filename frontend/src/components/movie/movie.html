@@ -1,0 +1,81 @@
+@if (movie) {
+    <div class="movie-backdrop" [style.--bg-dinamico]="'url(' + getBackdropImage() + ')'"></div>
+
+    <div class="session-container">
+        
+        <div class="left-column">
+            <div class="poster">
+                <img [src]="getPoster()" [alt]="movie.titulo">
+            </div>
+        </div>
+
+        <div class="session-info">
+            <h1>{{ movie.titulo }}</h1>
+            <p class="movie-specs">
+                {{ movie.duracao }} MINUTOS, {{ movie.generos.join(', ') }}
+            </p>
+            <div class="movie-wrapper">
+                <div class="movie-details">
+                    <p><strong>Diretor:</strong> {{ movie.diretores.join(', ') }}</p>
+                    <p><strong>Elenco:</strong> {{ movie.elenco.join(', ') }}</p>
+                </div>
+
+                <div class="movie-rating">
+                    @switch (movie.classificacao) {
+                        @case ('L') {
+                            <span class="rating-box rating-l">L</span>
+                        }
+                        @case ('10') {
+                            <span class="rating-box rating-10">10</span>
+                        }
+                        @case ('12') {
+                            <span class="rating-box rating-12">12</span>
+                        }
+                        @case ('14') {
+                            <span class="rating-box rating-14">14</span>
+                        }
+                        @case ('16') {
+                            <span class="rating-box rating-16">16</span>
+                        }
+                        @case ('18') {
+                            <span class="rating-box rating-18">18</span>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="movie-synopsis">
+                <h3>Sinopse</h3>
+                <p>{{ movie.sinopse }}</p>
+            </div>
+            <div class="sessions-header">
+                <h3 class="next-sessions">Próximas sessões</h3>
+                <input type="date" class="calendar-filter"
+                    [value]="currentDate"
+                    (change)="filterByDate($event)">
+            </div>
+            <div class="session-list">
+                @for (session of filteredSessions; track session.id) {
+                    <div class="session-metadata">
+                        <div class="metadata-item">
+                            <span class="metadata-value">{{ session.sala?.nome }}</span>
+                            <div class="metadata-type">
+                                <span class="metadata-value-type">{{ session.tipo }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="metadata-item">
+                            <button class="button-buy">
+                                <span class="button-buy-text">{{ session.inicio | date: 'HH:mm' }}</span>
+                                <span class="button-buy-text-hover">Comprar</span>
+                            </button>
+                        </div>
+                    </div>
+                } @empty {
+                    <p class="no-sessions-message">Nenhuma sessão disponível para a data selecionada.</p>
+                }
+            </div>
+        </div>
+    </div>
+} @else {
+    <h1>Carregando sessão...</h1>
+}

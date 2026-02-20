@@ -1,8 +1,7 @@
 export interface User {
   nome: string;
   email: string;
-  senha?: string;
+  password?: string;
   celular?: string;
-  cpf: string;
-  role: 'USER';
+  cpf: string
 }

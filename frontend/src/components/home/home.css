@@ -5,25 +5,100 @@
 }
 
 .home-container {
-    min-height: 81.1vh;
     display: flex;
+    min-height: 70vh;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    background: linear-gradient(180deg, #FFFFFF 0%, #959292 100%);
+    width: 100%;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
     box-sizing: border-box;
 }
 
-.welcome-message {
-    font-size: 50px;
-    font-family:'Arial', sans-serif;
-    text-align: center;
-    margin: 10px 0;
+.top-container {
+    width: 100%;
+    margin-left: 11rem;
+    display: flex;
 }
 
-.warning-message {
-    font-size: 30px;
-    font-family:'Arial', sans-serif;
+.date-picker {
+    margin-left: 1.9rem;
+    min-width: 10rem;
+    padding: 0.5rem;
+    border: 2px solid #ccc;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    justify-items: center;
+}
+
+.date-picker:hover {
+    border: 2px solid var(--secondary-color);
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.no-movies-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    width: 100%;
+    max-width: 600px;
+    margin: 5rem auto;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 12px;
     text-align: center;
-    color: red;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.no-movies-container i {
+    font-size: 4rem;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+}
+
+.no-movies-container h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.no-movies-container p {
+    font-size: 1.1rem;
+    color: #666;
+    margin: 5px 0;
+    line-height: 1.6;
+}
+
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    width: 100%;
+    background: #fee;
+    border: 1px solid #fcc;
+    border-radius: 8px;
+    color: var(--danger);
+    padding: 20px;
+    text-align: center;
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    width: 100%;
+    color: #666;
+    font-size: 1.2rem;
 }

@@ -1,0 +1,130 @@
+{
+  "salas": [
+    { "id": "1", "nome": "Sala IMAX", "capacidade": 120 },
+    { "id": "2", "nome": "Sala 02 - VIP", "capacidade": 45 },
+    { "id": "3", "nome": "Sala 03 - 3D", "capacidade": 80 }
+  ],
+  "sessoes": [
+    { "id": "1", "filmeId": "278", "salaId": "1", "inicio": "2026-02-19T14:00:00", "tipo": "Legendado" },
+    { "id": "9", "filmeId": "278", "salaId": "1", "inicio": "2026-02-19T17:00:00", "tipo": "Legendado" },
+    
+    { "id": "2", "filmeId": "238", "salaId": "2", "inicio": "2026-02-19T15:30:00", "tipo": "Legendado" },
+    { "id": "10", "filmeId": "238", "salaId": "2", "inicio": "2026-02-20T15:30:00", "tipo": "Legendado" },
+    
+    { "id": "3", "filmeId": "155", "salaId": "1", "inicio": "2026-02-19T18:00:00", "tipo": "Dublado" },
+    
+    { "id": "4", "filmeId": "129", "salaId": "3", "inicio": "2026-02-19T13:00:00", "tipo": "Dublado" },
+    { "id": "11", "filmeId": "129", "salaId": "3", "inicio": "2026-02-19T16:00:00", "tipo": "Dublado" },
+    { "id": "12", "filmeId": "129", "salaId": "3", "inicio": "2026-02-20T13:00:00", "tipo": "Dublado" },
+    
+    { "id": "5", "filmeId": "496243", "salaId": "2", "inicio": "2026-02-19T20:00:00", "tipo": "Legendado" },
+    { "id": "13", "filmeId": "496243", "salaId": "2", "inicio": "2026-02-19T22:30:00", "tipo": "Legendado" },
+    
+    { "id": "6", "filmeId": "122", "salaId": "1", "inicio": "2026-02-20T19:00:00", "tipo": "Legendado" },
+    { "id": "14", "filmeId": "122", "salaId": "1", "inicio": "2026-02-20T21:30:00", "tipo": "Legendado" },
+    { "id": "15", "filmeId": "122", "salaId": "1", "inicio": "2026-02-21T19:00:00", "tipo": "Legendado" },
+    
+    { "id": "7", "filmeId": "424", "salaId": "3", "inicio": "2026-02-20T16:00:00", "tipo": "Legendado" },
+    
+    { "id": "8", "filmeId": "497", "salaId": "3", "inicio": "2026-02-21T20:00:00", "tipo": "Dublado" },
+    { "id": "16", "filmeId": "497", "salaId": "3", "inicio": "2026-02-22T20:00:00", "tipo": "Dublado" }
+  ],
+  "filmes": [
+    {
+      "id": "278",
+      "title": "Um Sonho de Liberdade",
+      "poster": "um-sonho-de-liberdade-278.jpg",
+      "backdrop": "um-sonho-de-liberdade-278-backdrop.jpg",
+      "classificacao": "16",
+      "duracao": 142,
+      "generos": ["Drama", "Crime"],
+      "diretores": ["Frank Darabont"],
+      "sinopse": "Em 1946, Andy Dufresne, um banqueiro jovem e bem sucedido, tem a sua vida radicalmente modificada ao ser condenado por um crime que nunca cometeu...",
+      "elenco": ["Tim Robbins", "Morgan Freeman", "Bob Gunton"]
+    },
+    {
+      "id": "238",
+      "title": "O Poderoso Chefão",
+      "poster": "o-poderoso-chefao-238.jpg",
+      "backdrop": "o-poderoso-chefao-238-backdrop.jpg",
+      "classificacao": "14",
+      "duracao": 175,
+      "generos": ["Drama", "Crime"],
+      "diretores": ["Francis Ford Coppola"],
+      "sinopse": "Em 1945, Don Corleone é o chefe de uma mafiosa família italiana de Nova York. Ele costuma apadrinhar várias pessoas, realizando importantes favores...",
+      "elenco": ["Marlon Brando", "Al Pacino", "James Caan"]
+    },
+    {
+      "id": "424",
+      "title": "A Lista de Schindler",
+      "poster": "a-lista-de-schindler-424.jpg",
+      "backdrop": "a-lista-de-schindler-424-backdrop.jpg",
+      "classificacao": "14",
+      "duracao": 195,
+      "generos": ["Drama", "História", "Guerra"],
+      "diretores": ["Steven Spielberg"],
+      "sinopse": "O alemão Oskar Schindler viu na mão de obra judia uma solução barata e viável para lucrar com negócios durante a guerra...",
+      "elenco": ["Liam Neeson", "Ben Kingsley", "Ralph Fiennes"]
+    },
+    {
+      "id": "129",
+      "title": "A Viagem de Chihiro",
+      "poster": "a-viagem-de-chihiro-129.jpg",
+      "backdrop": "a-viagem-de-chihiro-129-backdrop.jpg",
+      "classificacao": "L",
+      "duracao": 126,
+      "generos": ["Animação", "Família", "Fantasia"],
+      "diretores": ["Hayao Miyazaki"],
+      "sinopse": "Chihiro e seus pais estão se mudando para uma cidade diferente. A caminho da nova casa, o pai decide pegar um atalho. Eles se deparam com uma mesa repleta de comida...",
+      "elenco": ["Rumi Hiiragi", "Miyu Irino", "Mari Natsuki"]
+    },
+    {
+      "id": "155",
+      "title": "Batman: O Cavaleiro das Trevas",
+      "poster": "batman-o-cavaleiro-das-trevas-155.jpg",
+      "backdrop": "batman-o-cavaleiro-das-trevas-155-backdrop.jpg",
+      "classificacao": "12",
+      "duracao": 152,
+      "generos": ["Ação", "Crime", "Thriller"],
+      "diretores": ["Christopher Nolan"],
+      "sinopse": "Após dois anos desde o surgimento do Batman, os criminosos de Gotham City têm muito o que temer. Com a ajuda do tenente James Gordon...",
+      "elenco":["Christian Bale", "Heath Ledger", "Aaron Eckhart"]
+    },
+    {
+      "id": "497",
+      "title": "À Espera de um Milagre",
+      "poster": "a-espera-de-um-milagre-497.jpg",
+      "backdrop": "a-espera-de-um-milagre-497-backdrop.jpg",
+      "classificacao": "14",
+      "duracao": 189,
+      "generos": ["Fantasia", "Drama", "Crime"],
+      "diretores": ["Frank Darabont"],
+      "sinopse": "Milagres acontecem em lugares inesperados, mesmo no bloco de celas para o corredor da morte na Penitenciária Cold Mountain. Lá, John Coffey...",
+      "elenco": ["Tom Hanks", "David Morse", "Bonnie Hunt"]
+    },
+    {
+      "id": "496243",
+      "title": "Parasita",
+      "poster": "parasita-496243.jpg",
+      "backdrop": "parasita-496243-backdrop.jpg",
+      "classificacao": "16",
+      "duracao": 132,
+      "generos": ["Comédia", "Thriller", "Drama"],
+      "diretores": ["Bong Joon-Ho"],
+      "sinopse": "Toda a família de Ki-taek está desempregada, vivendo num porão sujo e apertado. Uma obra do acaso faz com que o filho adolescente da família comece a dar aulas...",
+      "elenco": ["Kang-ho Song", "Sun-kyun Lee", "Yeo-Jeong Cho"]
+    },
+    {
+      "id": "122",
+      "title": "O Senhor dos Anéis: O Retorno do Rei",
+      "poster": "o-senhor-dos-aneis-o-retorno-do-rei-122.jpg",
+      "backdrop": "o-senhor-dos-aneis-o-retorno-do-rei-122-backdrop.jpg",
+      "classificacao": "12",
+      "duracao": 202,
+      "generos": ["Aventura", "Fantasia", "Ação"],
+      "diretores": ["Peter Jackson"],
+      "sinopse": "O confronto final entre as forças do bem e do mal que lutam pelo controle do futuro da Terra Média se aproxima. Sauron planeja um grande ataque a Minas Tirith...",
+      "elenco": ["Elijah Wood", "Ian McKellen", "Viggo Mortensen"]
+    }
+  ]
+}

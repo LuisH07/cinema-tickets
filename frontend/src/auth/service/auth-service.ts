@@ -20,7 +20,7 @@ export class AuthService {
             const response = await fetch(this.apiUrl, {
                 method: 'POST',
                 headers: {'Content-Type' : 'application/json'},
-                body: JSON.stringify({email: email, senha: password}),
+                body: JSON.stringify({email: email, password: password}),
             });
 
             const data = await response.json();
@@ -67,12 +67,12 @@ export class AuthService {
                 body: JSON.stringify(userData),
             });
 
-            const data = await response.json().catch(() => ({}));
-            
             if (!response.ok) {
+              const data = await response.json().catch(() => ({}));
+
               return { 
                 success: false, 
-                message: data.message || data.errors?.[0]?.defaultMessage || 'Erro no servidor' 
+                message: data.detail || 'Erro no servidor' 
               };
             }
 
@@ -93,6 +93,23 @@ export class AuthService {
         case 500: return 'Erro interno do servidor';
         default: return 'Erro ao conectar com o servidor';
       }
+    }
+
+    getRole(): string {
+      const token = this.getToken();
+      if (!token) return '';
+
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.role || ''; 
+      } catch (e) {
+        console.error('Erro ao decodificar o token:', e);
+        return '';
+      }
+    }
+
+    isAdmin(): boolean {
+      return this.getRole() === 'ADMIN';
     }
 
 }

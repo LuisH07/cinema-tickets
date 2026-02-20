@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+app:
+  seed:
+    enabled: false
+  errors:
+    include-stacktrace: false
+
+  bootstrap-admin:
+    enabled: ${BOOTSTRAP_ADMIN_ENABLED:true}
+    email: ${BOOTSTRAP_ADMIN_EMAIL}
+    password: ${BOOTSTRAP_ADMIN_PASSWORD}
+    cpf: ${BOOTSTRAP_ADMIN_CPF:00000000000}
+    nome: ${BOOTSTRAP_ADMIN_NAME:Admin}
