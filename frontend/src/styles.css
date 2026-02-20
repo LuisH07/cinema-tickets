@@ -1,3 +1,5 @@
+@import "@ng-select/ng-select/themes/default.theme.css";
+
 :root {
   --primary-color: #e73850;
   --secondary-color: #fa9f18;
@@ -38,7 +40,6 @@ textarea:read-only {
   background-color: #e9ecef;
 }
 
-@import "@ng-select/ng-select/themes/default.theme.css";
        
 body .ng-select.custom-select .ng-select-container {
     height: 42px !important;
@@ -79,4 +80,36 @@ body .ng-select.custom-select .ng-dropdown-panel {
     border-radius: 12px !important;
     overflow: hidden;
     border: 1px solid #ccc !important;
+}
+
+/* Garante que o painel de opções tenha um fundo branco e seja visível */
+body .ng-select.custom-select .ng-dropdown-panel {
+    background-color: #ffffff !important;
+    z-index: 9999 !important;
+}
+
+/* Estilo de cada opção na lista */
+body .ng-select.custom-select .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+    background-color: #ffffff !important;
+    color: #333 !important; /* Cor do texto */
+    padding: 10px 15px !important;
+    font-family: 'Arial', sans-serif !important;
+}
+
+/* Estilo quando você passa o mouse por cima da opção (Hover) */
+body .ng-select.custom-select .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+    background-color: #f5f5f5 !important;
+    color: var(--secondary-color) !important; /* Texto com sua cor secundária */
+}
+
+/* Estilo da opção que já está selecionada dentro da lista */
+body .ng-select.custom-select .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
+    background-color: #eeeeee !important;
+    font-weight: bold;
+}
+
+/* Garante que a mensagem "Nenhum item encontrado" também seja visível */
+body .ng-select.custom-select .ng-dropdown-panel .ng-optgroup, 
+body .ng-select.custom-select .ng-dropdown-panel .ng-option-label {
+    color: #333 !important;
 }
