@@ -2,7 +2,7 @@ import { SessionModel } from "./session.model";
 
 export interface MovieModel {
     id: number;
-    title: string;
+    titulo: string;
     poster: string;
     backdrop: string;
     classificacao: string;

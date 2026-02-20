@@ -42,7 +42,8 @@ import { RouterModule } from '@angular/router';
             <div class="sessions-container">
               <button *ngFor="let session of getSessionsForMovie(movie.id)" 
                       class="session-button" 
-                      [routerLink]="['/movie', movie.id]">
+                      [routerLink]="['/movie', movie.id]"
+                      [queryParams]="{ data: session.inicio.split('T')[0] }">
                 <span class="session-time">{{ formatTime(session.inicio) }}</span>
                 <span class="session-type">{{ session.tipo }}</span>
                 <span class="session-room">{{ getRoom(session.salaId) }}</span>
