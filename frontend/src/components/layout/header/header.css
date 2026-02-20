@@ -82,3 +82,33 @@
 	font-size: 1rem;
 	font-family: sans-serif;
 }
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 50px; 
+    align-items: center;
+}
+
+.session-button {
+    background-color: var(--secondary-color, #c91432);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: filter 0.2s;
+}
+
+.session-button:hover {
+    filter: brightness(1.2);
+}
