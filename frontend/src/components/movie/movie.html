@@ -5,12 +5,12 @@
         
         <div class="left-column">
             <div class="poster">
-                <img [src]="getPoster()" [alt]="movie.title">
+                <img [src]="getPoster()" [alt]="movie.titulo">
             </div>
         </div>
 
         <div class="session-info">
-            <h1>{{ movie.title }}</h1>
+            <h1>{{ movie.titulo }}</h1>
             <p class="movie-specs">
                 {{ movie.duracao }} MINUTOS, {{ movie.generos.join(', ') }}
             </p>

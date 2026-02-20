@@ -22,7 +22,8 @@ export const routes: Routes = [
     {
         path: 'cadastro-sessao', 
         component: Sessao,
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: { role: 'ADMIN' }
     },
     {
         path: 'movie/:id',

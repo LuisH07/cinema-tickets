@@ -15,12 +15,11 @@ import { SessionModel } from '../../app/core/models/session.model';
   styleUrl: './movie.css',
 })
 export class Movie implements OnInit {
-
   movie?: MovieModel;
-  
-  sessions: SessionModel[] = [];
   filteredSessions: SessionModel[] = [];
+  
   currentDate: string = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  movieId!: number;
 
   constructor(
     private moviesService: MoviesService,
@@ -31,43 +30,63 @@ export class Movie implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.route.queryParamMap.subscribe(queryParams => {
+      const dataDaUrl = queryParams.get('data');
+      if (dataDaUrl) {
+        this.currentDate = dataDaUrl;
+      }
+    });
+
     this.route.paramMap.subscribe(async (params) => {
-      const movieId = Number(params.get('id'));
+      this.movieId = Number(params.get('id'));
 
-      if (movieId) {
-        this.movie = await this.moviesService.getMoviesById(movieId);
-        const todasAsSessoes = await this.sessionService.getSessions();
-        const todasAsSalas = await this.roomService.getRooms();
+      if (this.movieId) {
+        try {
+          this.movie = await this.moviesService.getMoviesById(this.movieId);
+        } catch (error) {
+          console.error('Erro ao carregar o filme:', error);
+        }
 
-        this.sessions = todasAsSessoes
-          .filter(sessao => Number(sessao.filmeId) === movieId)
-          .map(sessao => ({
-            ...sessao,
-            sala: todasAsSalas.find(sala => Number(sala.id) === Number(sessao.salaId))
-          }));
-
-        console.log('Sessões prontas com a sala:', this.sessions);
-
-        this.filterByDate(this.currentDate);
-        this.cdr.detectChanges();
+        await this.carregarSessoesNoBanco(this.currentDate);
       }
     });
   }
 
-  filterByDate(evento: any) {
+  async filterByDate(evento: any) {
     const selectedDate = typeof evento === 'string' ? evento : evento.target.value;
     this.currentDate = selectedDate;
     
-    this.filteredSessions = this.sessions.filter(sessao => 
-      sessao.inicio.split('T')[0] === selectedDate
-    );
+    if (this.movieId) {
+      await this.carregarSessoesNoBanco(this.currentDate);
+    }
+  }
+
+  private async carregarSessoesNoBanco(dataBusca: string) {
+    const retornoSessoes = await this.sessionService.getSessionsByDate(dataBusca);
+    const retornoSalas = await this.roomService.getRooms();
+
+    let todasAsSessoes = Array.isArray(retornoSessoes) ? retornoSessoes : ((retornoSessoes as any).content || []);
+    if (!Array.isArray(todasAsSessoes)) todasAsSessoes = [];
+
+    let todasAsSalas = Array.isArray(retornoSalas) ? retornoSalas : ((retornoSalas as any).content || []);
+
+    this.filteredSessions = todasAsSessoes
+      .filter((sessao: any) => Number(sessao.filmeId) === this.movieId)
+      .map((sessao: any) => ({
+        ...sessao,
+        sala: todasAsSalas.find((sala: any) => Number(sala.id) === Number(sessao.salaId))
+      }));
+
+    this.cdr.detectChanges();
   }
 
   getPoster(): string {
-    return '/images/' + this.movie?.poster;
+    if (!this.movie?.poster) return '/images/placeholder.jpg';
+    return this.movie.poster.startsWith('/') ? this.movie.poster : '/images/' + this.movie.poster;
   }
 
   getBackdropImage(): string {
-    return '/images/' + this.movie?.backdrop;
+    if (!this.movie?.backdrop) return '';
+    return this.movie.backdrop.startsWith('/') ? this.movie.backdrop : '/images/' + this.movie.backdrop;
   }
 }

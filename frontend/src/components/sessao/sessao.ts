@@ -22,7 +22,7 @@ import Swal from 'sweetalert2';
               <ng-select 
                 class="custom-select" 
                 [items]="filmes" 
-                bindLabel="title" 
+                bindLabel="titulo" 
                 bindValue="id" 
                 formControlName="filmeId"
                 placeholder="Selecione um filme..."
@@ -49,17 +49,6 @@ import Swal from 'sweetalert2';
           </div>
 
           <div class="form-row">
-            <div class="form-col">
-              <label>Classificação Indicativa<span class="required">*</span></label>
-              <select formControlName="classificacao">
-                <option value="Livre">Livre</option>
-                <option value="10">10 anos</option>
-                <option value="12">12 anos</option>
-                <option value="14">14 anos</option>
-                <option value="16">16 anos</option>
-                <option value="18">18 anos</option>
-              </select>
-            </div>
 
             <div class="form-col">
               <label>Tipo de Áudio<span class="required">*</span></label>
@@ -173,17 +162,18 @@ export class Sessao implements OnInit {
       let dataAtual = new Date(dInicio);
       
       while (dataAtual <= dFim) {
+        
+        const dataFormatada = dataAtual.toISOString().split('T')[0];
+        
         const payload = {
           filmeId: Number(this.sessaoForm.value.filmeId), 
           salaId: Number(this.sessaoForm.value.salaId),
-          data: dataAtual.toISOString().split('T')[0],
-          horario: this.sessaoForm.value.horario,
-          classificacao: this.sessaoForm.value.classificacao
+          tipo: this.sessaoForm.value.tipo,
+          inicio: `${dataFormatada}T${this.sessaoForm.value.horario}:00` // <-- Junta data, o 'T', o horário e os segundos
         };
 
         console.log('Enviando para o Back-end:', payload);
         
-        // Chamada await direta para o Service (sem firstValueFrom)
         await this.service.salvarSessao(payload);
         dataAtual.setDate(dataAtual.getDate() + 1);
       }
