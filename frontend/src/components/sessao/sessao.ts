@@ -22,7 +22,7 @@ import Swal from 'sweetalert2';
               <ng-select 
                 class="custom-select" 
                 [items]="filmes" 
-                bindLabel="title" 
+                bindLabel="titulo" 
                 bindValue="id" 
                 formControlName="filmeId"
                 placeholder="Selecione um filme..."
