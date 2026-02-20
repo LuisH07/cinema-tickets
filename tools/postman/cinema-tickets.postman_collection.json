@@ -1,0 +1,188 @@
+{
+  "info": {
+    "_postman_id": "bc84eb15-cd52-4560-b6fa-b585adf7ebed",
+    "name": "cinema-tickets",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "41799555"
+  },
+  "item": [
+    {
+      "name": "Resgister",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"luishenriqueds01@gmail.com\",\n    \"password\": \"password\",\n    \"nome\": \"Luis Henrique\",\n    \"cpf\": \"1508792388\",\n    \"celular\": \"87981094904\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"admin@local.dev\",\n    \"password\": \"admin1\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Filmes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/filmes/6",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "filmes",
+            "6"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Salas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/salas",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "salas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sessoes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/sessoes?data=2026-02-21",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessoes"
+          ],
+          "query": [
+            {
+              "key": "data",
+              "value": "2026-02-21"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sessao",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJzdWIiOiJhZG1pbkBsb2NhbC5kZXYiLCJpYXQiOjE3NzE1NjYxNDUsImV4cCI6MTc3MTY1MjU0NX0.AJDz94j3J7xrLQVj91Z992Mzh21JSPpruy6AYAOaidc",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"filmeId\": 6,\n    \"salaId\": 2,\n    \"tipo\": \"Legendado\",\n    \"inicio\": \"2026-02-21T08:00:00\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sessoes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessoes"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    }
+  ]
+}
