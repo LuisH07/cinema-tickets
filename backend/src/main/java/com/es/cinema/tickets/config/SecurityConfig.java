@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -28,7 +29,7 @@ public class SecurityConfig {
 
     private static final String[] PUBLIC_ENDPOINTS = {
             "/auth/**",
-            "/error"
+            "/error",
     };
 
     private static final String[] SWAGGER_ENDPOINTS = {
@@ -53,12 +54,17 @@ public class SecurityConfig {
 
     @Bean
     @Profile("dev")
-    public SecurityFilterChain devSecurityFilterChain(HttpSecurity http) {
+    public SecurityFilterChain devSecurityFilterChain(HttpSecurity http) throws Exception {
         return baseSecurityFilterChain(http)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers(SWAGGER_ENDPOINTS).permitAll()
                         .requestMatchers("/actuator/**").permitAll()
+                        
+                        .requestMatchers(HttpMethod.GET, "/sessoes/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/filmes/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/salas/**").permitAll()
+                        
                         .anyRequest().authenticated()
                 )
                 .build();
@@ -66,17 +72,18 @@ public class SecurityConfig {
 
     @Bean
     @Profile("prod")
-    public SecurityFilterChain prodSecurityFilterChain(HttpSecurity http) {
+    public SecurityFilterChain prodSecurityFilterChain(HttpSecurity http) throws Exception {
         return baseSecurityFilterChain(http)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-
                         .requestMatchers(SWAGGER_ENDPOINTS).denyAll()
-
                         .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
-
+                        
+                        .requestMatchers(HttpMethod.GET, "/sessoes/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/filmes/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/salas/**").permitAll()
+                        
                         .requestMatchers("/actuator/**").hasRole("ADMIN")
-
                         .anyRequest().authenticated()
                 )
                 .build();
@@ -85,14 +92,12 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
-
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
