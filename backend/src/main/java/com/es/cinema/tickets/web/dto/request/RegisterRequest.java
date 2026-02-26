@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Getter
+@Setter
 public class RegisterRequest {
 
     @NotBlank(message = "Email é obrigatório")
