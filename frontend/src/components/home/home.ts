@@ -119,7 +119,6 @@ export class Home implements OnInit {
 
   private setDateRange() {
     const today = new Date();
-    today.setDate(today.getDate() - 7);
     this.minDate = this.formatDate(today);
     
     const max = new Date(today);
