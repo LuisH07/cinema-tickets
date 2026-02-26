@@ -58,10 +58,10 @@ export class Home implements OnInit {
   isLoading = true;
 
   constructor(
-    private filmsService: MoviesService,
-    private sessionService: SessionService,
-    private roomService: RoomService,
-    private cdr: ChangeDetectorRef,
+    private readonly filmsService: MoviesService,
+    private readonly sessionService: SessionService,
+    private readonly roomService: RoomService,
+    private readonly cdr: ChangeDetectorRef,
   ) {
     this.setDateRange();
   }
@@ -119,6 +119,7 @@ export class Home implements OnInit {
 
   private setDateRange() {
     const today = new Date();
+    today.setDate(today.getDate() - 7);
     this.minDate = this.formatDate(today);
     
     const max = new Date(today);

@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { SessionModel } from '../../app/core/models/session.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionService {
-  private baseUrl = 'http://localhost:8080';
+  private readonly baseUrl = 'http://localhost:8080';
 
   private getHeaders() {
     const token = localStorage.getItem('token');

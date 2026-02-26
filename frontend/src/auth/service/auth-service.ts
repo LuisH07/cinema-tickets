@@ -8,12 +8,12 @@ import { jwtDecode } from 'jwt-decode';
 })
 export class AuthService {
 
-    constructor(private router: Router) {}
+    constructor(private readonly router: Router) {}
 
-    private apiUrl = 'http://localhost:8080/auth/login';
-    private registerUrl = 'http://localhost:8080/auth/register';
+    private readonly apiUrl = 'http://localhost:8080/auth/login';
+    private readonly registerUrl = 'http://localhost:8080/auth/register';
 
-    private authStatus = new BehaviorSubject<boolean>(this.isAuthenticated());
+    private readonly authStatus = new BehaviorSubject<boolean>(this.isAuthenticated());
     authStatus$ = this.authStatus.asObservable();
 
     async login(email: string, password: string): Promise<{success: boolean; message?: string}>{

@@ -71,8 +71,8 @@ export class MoviesCarousel implements AfterViewInit, OnChanges {
   canScrollLeft = false;
   canScrollRight = false;
 
-  private movieMap = new Map();
-  private roomMap = new Map();
+  private readonly movieMap = new Map();
+  private readonly roomMap = new Map();
 
   ngAfterViewInit() {
     setTimeout(() => this.updateScrollButtons(), 100);
@@ -107,7 +107,7 @@ export class MoviesCarousel implements AfterViewInit, OnChanges {
           firstSessionTime: earliestSession ? this.extractTime(earliestSession.inicio) : '23:59'
         };
       })
-      .filter(movie => movie);
+      .filter(Boolean);
     
     return moviesWithFirstSession.sort((a, b) => 
       a.firstSessionTime.localeCompare(b.firstSessionTime)

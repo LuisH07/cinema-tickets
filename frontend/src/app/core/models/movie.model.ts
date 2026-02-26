@@ -1,5 +1,3 @@
-import { SessionModel } from "./session.model";
-
 export interface MovieModel {
     id: number;
     titulo: string;

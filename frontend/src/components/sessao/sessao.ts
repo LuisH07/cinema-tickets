@@ -86,9 +86,9 @@ import Swal from 'sweetalert2';
 })
 
 export class Sessao implements OnInit {
-  private service = inject(SessionService);
-  private fb = inject(FormBuilder);
-  private cdr = inject(ChangeDetectorRef);
+  private readonly service = inject(SessionService);
+  private readonly fb = inject(FormBuilder);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   sessaoForm: FormGroup;
   filmes: any[] = [];
@@ -138,7 +138,7 @@ export class Sessao implements OnInit {
 
     if (this.isLoading) return;
 
-    const { dataInicio, dataFim, ...dadosForm } = this.sessaoForm.value;
+    const { dataInicio, dataFim } = this.sessaoForm.value;
     
     // Validação de data retroativa (conforme solicitado anteriormente)
     const hoje = new Date();
