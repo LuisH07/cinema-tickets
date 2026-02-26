@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "0.0.0",
+  "version": "2.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -41,8 +41,9 @@
     "@angular/build": "^21.1.2",
     "@angular/cli": "^21.1.2",
     "@angular/compiler-cli": "^21.1.0",
+    "@types/jasmine": "^6.0.0",
+    "@vitest/ui": "^4.0.18",
     "jsdom": "^27.1.0",
-    "typescript": "~5.9.2",
-    "vitest": "^4.0.8"
+    "typescript": "~5.9.2"
   }
 }

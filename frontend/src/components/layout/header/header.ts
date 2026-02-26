@@ -26,6 +26,10 @@ import { Router, RouterModule } from '@angular/router';
                   <span class="session-text"> Cadastrar Sessão </span>
                 </button>
               }
+<<<<<<< HEAD
+
+=======
+>>>>>>> 0235f6591649489aef53153a288122d3ac09e74e
               <button type="button" class="logout-button" (click)="onLogout()">
                 <span class="logout-text"> Sair </span>
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -51,4 +55,5 @@ export class Header {
   onLogout() {
     this.authService.logout();
   }
+
 }

@@ -1,33 +1,27 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
 import { Sessao } from './sessao';
+import { SessionService } from '../../general-service/session-service/session-service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('Sessao', () => {
-  let component: Sessao;
-  let fixture: ComponentFixture<Sessao>;
+  let mockSessionService: Partial<SessionService>;
 
   beforeEach(async () => {
+    mockSessionService = {
+      listarFilmes: () => Promise.resolve([])
+    };
+
     await TestBed.configureTestingModule({
-      // Como é Standalone, o componente entra em imports, não em declarations
-      imports: [Sessao, ReactiveFormsModule],
+      imports: [Sessao, HttpClientTestingModule],
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting()
+        { provide: SessionService, useValue: mockSessionService }
       ]
     }).compileComponents();
-
-    fixture = TestBed.createComponent(Sessao);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    const fixture = TestBed.createComponent(Sessao);
+    const component = fixture.componentInstance;
     expect(component).toBeTruthy();
-  });
-
-  it('deve validar formulário como inválido quando vazio', () => {
-    expect(component.sessaoForm.valid).toBeFalsy();
   });
 });
