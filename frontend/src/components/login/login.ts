@@ -3,7 +3,6 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/service/auth-service';
 import { Router } from '@angular/router';
-import { AuthMock } from '../../auth/mock/auth-mock';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -52,13 +51,13 @@ import Swal from 'sweetalert2';
   styleUrl: './login.css',
 })
 export class Login {
-  private authService = inject(AuthService);
-  private router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   loginForm: FormGroup;
 
   isLoading = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -105,6 +104,7 @@ export class Login {
         text: 'Erro ao conectar com o servidor, por favor tente novamente mais tarde!',
         confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--danger').trim(),
       });
+      console.log(e);
     } finally {
       this.isLoading = false;
     }

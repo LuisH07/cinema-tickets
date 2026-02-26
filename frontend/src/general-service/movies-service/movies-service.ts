@@ -5,7 +5,7 @@ import { MovieModel } from '../../app/core/models/movie.model';
   providedIn: 'root',
 })
 export class MoviesService {
-  private baseUrl = 'http://localhost:8080/filmes';
+  private readonly baseUrl = 'http://localhost:8080/filmes';
 
   async getMovies(): Promise<MovieModel[]> {
     const response = await fetch(this.baseUrl);

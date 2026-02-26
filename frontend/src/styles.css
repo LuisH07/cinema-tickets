@@ -76,12 +76,6 @@ body .ng-select.custom-select .ng-value-container .ng-placeholder {
     padding-left: 2px !important;
 }
 
-body .ng-select.custom-select .ng-dropdown-panel {
-    border-radius: 12px !important;
-    overflow: hidden;
-    border: 1px solid #ccc !important;
-}
-
 /* Garante que o painel de opções tenha um fundo branco e seja visível */
 body .ng-select.custom-select .ng-dropdown-panel {
     background-color: #ffffff !important;
