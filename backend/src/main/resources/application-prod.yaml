@@ -4,6 +4,7 @@ spring:
       on-profile: prod # rodar o projeto com docker sem seeder
 
   flyway:
+    enabled: true
     locations:
     - classpath:db/migration
     baseline-on-migrate: false
