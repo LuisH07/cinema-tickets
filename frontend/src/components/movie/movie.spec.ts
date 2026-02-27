@@ -1,22 +1,27 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Movie } from './movie';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('Movie', () => {
-  let component: Movie;
-  let fixture: ComponentFixture<Movie>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Movie]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(Movie);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
+      imports: [Movie],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({ id: '1' }),
+            snapshot: { params: { id: '1' } }
+          }
+        }
+      ]
+    }).compileComponents();
   });
 
   it('should create', () => {
+    const fixture = TestBed.createComponent(Movie);
+    const component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
 });

@@ -5,7 +5,7 @@ import { RoomModel } from '../../app/core/models/room.model';
   providedIn: 'root',
 })
 export class RoomService {
-  private baseUrl = 'http://localhost:8080/salas';
+  private readonly baseUrl = 'http://localhost:8080/salas';
 
   async getRooms(): Promise<RoomModel[]> {
     const response = await fetch(this.baseUrl);

@@ -97,11 +97,6 @@
   cursor: wait;
 }
 
-.form-login button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 .error-messages {
     display: flex;
     flex-direction: column;
@@ -138,15 +133,15 @@
 .form-login button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    background-color: #ccc;
-    border-color: #ccc;
-    color: #666;
+    background-color: #d2d2d2;
+    border-color: #d2d2d2;
+    color: black;
 }
 
 .form-login button:disabled:hover {
-    background-color: #ccc;
-    color: #666;
-    border-color: #ccc;
+    background-color: #d2d2d2;
+    color: black;
+    border-color: #d2d2d2;
 }
 
 .register {

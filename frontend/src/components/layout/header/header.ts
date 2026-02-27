@@ -51,4 +51,5 @@ export class Header {
   onLogout() {
     this.authService.logout();
   }
+
 }

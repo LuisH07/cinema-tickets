@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-    constructor(private router: Router) {}
+    constructor(private readonly router: Router) {}
 
-    private apiUrl = 'http://localhost:8080/auth/login';
-    private registerUrl = 'http://localhost:8080/auth/register';
+    private readonly apiUrl = 'http://localhost:8080/auth/login';
+    private readonly registerUrl = 'http://localhost:8080/auth/register';
 
-    private authStatus = new BehaviorSubject<boolean>(this.isAuthenticated());
+    private readonly authStatus = new BehaviorSubject<boolean>(this.isAuthenticated());
     authStatus$ = this.authStatus.asObservable();
 
     async login(email: string, password: string): Promise<{success: boolean; message?: string}>{
@@ -57,6 +58,23 @@ export class AuthService {
 
     getToken(): string | null {
         return localStorage.getItem('token');
+    }
+
+    getUserRole(): string {
+      const token = this.getToken();
+      if (!token) return '';
+      
+      try {
+        const decoded: any = jwtDecode(token);
+        return decoded.role || '';
+      } catch (error) {
+        console.error('Erro ao decodificar token:', error);
+        return '';
+      }
+    }
+
+    isAdmin(): boolean {
+      return this.getUserRole() === 'ADMIN';
     }
 
     async register(userData: any): Promise<{success: boolean; message?: string}> {
@@ -106,10 +124,6 @@ export class AuthService {
         console.error('Erro ao decodificar o token:', e);
         return '';
       }
-    }
-
-    isAdmin(): boolean {
-      return this.getRole() === 'ADMIN';
     }
 
 }

@@ -52,6 +52,7 @@ public class SecurityConfig {
 
     private HttpSecurity baseSecurityFilterChain(HttpSecurity http) {
         return http
+                // NOSONAR java:S4502 - API stateless com JWT (sem cookies/sessão). CSRF é relevante para auth via cookies
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
@@ -60,7 +61,7 @@ public class SecurityConfig {
 
     @Bean
     @Profile("dev")
-    public SecurityFilterChain devSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain devSecurityFilterChain(HttpSecurity http) {
         return baseSecurityFilterChain(http)
                 .authorizeHttpRequests(auth -> auth
                         // públicos
@@ -83,7 +84,7 @@ public class SecurityConfig {
 
     @Bean
     @Profile("prod")
-    public SecurityFilterChain prodSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain prodSecurityFilterChain(HttpSecurity http) {
         return baseSecurityFilterChain(http)
                 .authorizeHttpRequests(auth -> auth
                         // públicos
@@ -113,7 +114,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) {
         return config.getAuthenticationManager();
     }
 

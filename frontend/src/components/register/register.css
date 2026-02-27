@@ -148,9 +148,9 @@ button:hover {
 button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    background-color: #ccc;
-    border-color: #ccc;
-    color: #666;
+    background-color: #d2d2d2;
+    color: black;
+    border-color: #d2d2d2;
 }
 
 .required {

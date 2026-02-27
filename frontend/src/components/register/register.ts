@@ -98,20 +98,20 @@ import { NgxMaskDirective } from 'ngx-mask';
 })
 
 export class Register {
-  private authService = inject(AuthService);
-  private router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   registerForm: FormGroup;
   isLoading = false;
 
-  private cdr = inject(ChangeDetectorRef);
+  private readonly cdr = inject(ChangeDetectorRef);
 
-  constructor(private fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder) {
     this.registerForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       celular: [''],
-      cpf: ['', [Validators.required, Validators.pattern(/^[0-9]{11}$/)]]
+      cpf: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]]
     });
   }
 
@@ -154,7 +154,7 @@ export class Register {
       }
     } catch (e) {
       this.isLoading = false;
-
+      console.log(e);
       Swal.fire({
         icon: 'error',
         title: 'Erro',

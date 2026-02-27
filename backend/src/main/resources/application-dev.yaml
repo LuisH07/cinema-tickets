@@ -1,8 +1,12 @@
 spring:
+  config:
+    activate:
+      on-profile: dev # rodar o projeto no docker com seeder
+
   datasource:
-    url: jdbc:postgresql://localhost:5432/cinema_tickets
-    username: cinema_app
-    password: password
+    url: jdbc:postgresql://db:5432/cinema_tickets_dev
+    username: cinema_tickets_dev_app
+    password: ${CINEMA_TICKETS_DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -36,6 +40,3 @@ app:
     enabled: true
   errors:
     include-stacktrace: true
-
-jwt:
-  secret: "rjfoBSJbdo2DWCXzgWw42ug9VndCxurWHfAh71kq36o="

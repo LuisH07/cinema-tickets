@@ -1,8 +1,17 @@
 spring:
+  config:
+    activate:
+      on-profile: prod # rodar o projeto com docker sem seeder
+
+  flyway:
+    locations:
+    - classpath:db/migration
+    baseline-on-migrate: false
+
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: ${CINEMA_TICKETS_DB_URL}
+    username: ${CINEMA_TICKETS_DB_USERNAME}
+    password: ${CINEMA_TICKETS_DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -20,3 +29,7 @@ app:
     password: ${BOOTSTRAP_ADMIN_PASSWORD}
     cpf: ${BOOTSTRAP_ADMIN_CPF:00000000000}
     nome: ${BOOTSTRAP_ADMIN_NAME:Admin}
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION_MS}

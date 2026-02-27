@@ -3,9 +3,9 @@ spring:
     name: cinema-tickets-backend
     
   datasource:
-    url: ${DATABASE_URL} # Placeholder | jdbc:postgresql://localhost:PORTA/cinema_tickets
-    username: ${DATABASE_USERNAME} # Placeholder
-    password: ${DATABASE_PASSWORD} # Placeholder
+    url: jdbc:postgresql://localhost:5432/cinema_tickets_dev # rodar sem docker e sem seed
+    username: cinema_tickets_dev_app
+    password: ${CINEMA_TICKETS_DB_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
 
     hikari:
@@ -22,6 +22,7 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: validate
+    show-sql: false
     properties:
       hibernate:
         default_batch_fetch_size: 50
@@ -30,7 +31,7 @@ spring:
           time_zone: America/Sao_Paulo
 
   flyway:
-    enabled: true
+    enabled: false
     locations:
       - classpath:db/migration
     baseline-on-migrate: false
@@ -97,5 +98,5 @@ app:
     enabled: false
 
 jwt:
-  secret: ${JWT_SECRET} # Placeholder
+  secret: ${JWT_SECRET:rjfoBSJbdo2DWCXzgWw42ug9VndCxurWHfAh71kq36o=}
   expiration: ${JWT_EXPIRATION_MS:86400000} # 24 horas em milissegundos

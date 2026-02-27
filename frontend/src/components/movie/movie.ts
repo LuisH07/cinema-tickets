@@ -22,11 +22,11 @@ export class Movie implements OnInit {
   movieId!: number;
 
   constructor(
-    private moviesService: MoviesService,
-    private sessionService: SessionService,
-    private roomService: RoomService,
-    private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private readonly moviesService: MoviesService,
+    private readonly sessionService: SessionService,
+    private readonly roomService: RoomService,
+    private readonly route: ActivatedRoute,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
