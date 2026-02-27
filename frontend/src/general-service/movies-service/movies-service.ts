@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MovieModel } from '../../app/core/models/movie.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MoviesService {
-  private readonly baseUrl = 'http://localhost:8080/filmes';
+  private readonly baseUrl = `${environment.apiUrl}/filmes`;
 
   async getMovies(): Promise<MovieModel[]> {
     const response = await fetch(this.baseUrl);

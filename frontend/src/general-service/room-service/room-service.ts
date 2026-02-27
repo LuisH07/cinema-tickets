@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { RoomModel } from '../../app/core/models/room.model';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoomService {
-  private readonly baseUrl = 'http://localhost:8080/salas';
+  private readonly baseUrl = `${environment.apiUrl}/salas`;
 
   async getRooms(): Promise<RoomModel[]> {
     const response = await fetch(this.baseUrl);
