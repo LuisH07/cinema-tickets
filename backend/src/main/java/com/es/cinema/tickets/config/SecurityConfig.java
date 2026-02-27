@@ -60,7 +60,7 @@ public class SecurityConfig {
 
     @Bean
     @Profile("dev")
-    public SecurityFilterChain devSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain devSecurityFilterChain(HttpSecurity http) {
         return baseSecurityFilterChain(http)
                 .authorizeHttpRequests(auth -> auth
                         // públicos
@@ -83,7 +83,7 @@ public class SecurityConfig {
 
     @Bean
     @Profile("prod")
-    public SecurityFilterChain prodSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain prodSecurityFilterChain(HttpSecurity http) {
         return baseSecurityFilterChain(http)
                 .authorizeHttpRequests(auth -> auth
                         // públicos
@@ -113,7 +113,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) {
         return config.getAuthenticationManager();
     }
 

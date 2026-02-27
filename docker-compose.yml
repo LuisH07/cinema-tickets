@@ -1,9 +1,11 @@
+name: cinema-tickets
+
 services:
   db:
-    image: postgres:16-alpine
+    image: postgres:16
     environment:
-      POSTGRES_DB: cinema_tickets
-      POSTGRES_USER: postgres
+      POSTGRES_DB: cinema_tickets_dev
+      POSTGRES_USER: cinema_tickets_dev_app
       POSTGRES_PASSWORD: ${CINEMA_TICKETS_DB_PASSWORD}
       TZ: America/Sao_Paulo
     ports:
@@ -11,30 +13,27 @@ services:
     networks:
       - internal-net
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d cinema_tickets"]
+      test: ["CMD-SHELL", "pg_isready -U cinema_tickets_dev_app -d cinema_tickets_dev"]
       interval: 5s
       timeout: 3s
       retries: 10
 
   backend:
+    image: cinema-tickets-backend
     build: ./backend
     ports:
       - "8080:8080"
     networks:
       - public-net
       - internal-net
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      CINEMA_TICKETS_DB_PASSWORD: ${CINEMA_TICKETS_DB_PASSWORD}
     depends_on:
       db:
         condition: service_healthy
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/cinema_tickets
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: ${CINEMA_TICKETS_DB_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-      BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL}
-      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD}
 
 networks:
   public-net:
@@ -43,4 +42,5 @@ networks:
     driver: bridge
 
 volumes:
-  db_data:
+  postgres-data:
+    driver: local

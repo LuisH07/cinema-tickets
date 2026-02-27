@@ -1,4 +1,3 @@
-
 #Build
 FROM maven:3.9.12-eclipse-temurin-21 AS builder
 
@@ -30,7 +29,4 @@ USER appuser
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", \
-  "-Djava.security.egd=file:/dev/./urandom", \
-  "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:prod}", \
-  "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
