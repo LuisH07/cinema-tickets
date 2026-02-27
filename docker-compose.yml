@@ -39,8 +39,10 @@ services:
     image: cinema-tickets-frontend
     build:
       context: ./frontend
+      args:
+        CONFIG: ${CONFIG:-development}
     ports:
-      - "3000:80"
+      - "4200:80"
     networks:
       - public-net
     depends_on:
