@@ -6,6 +6,10 @@
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/angular/angular-original.svg" width="90" alt="Angular Logo" />
   &nbsp;&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg" width="90" alt="PostgreSQL Logo" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg" width="90" alt="Docker Logo" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg" width="90" alt="GitHub Logo" />
 </p>
 
 <h1 align="center">Cinema Tickets</h1>
@@ -15,14 +19,18 @@
 </p>
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/Java-17+-ED8B00?style=for-the-badge&logo=java&logoColor=white" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/Java-21+-ED8B00?style=for-the-badge&logo=java&logoColor=white" /></a>
   <a href="#"><img src="https://img.shields.io/badge/Spring%20Boot-3.x-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" /></a>
   <a href="#"><img src="https://img.shields.io/badge/Angular-Standalone-DD0031?style=for-the-badge&logo=angular&logoColor=white" /></a>
   <a href="#"><img src="https://img.shields.io/badge/PostgreSQL-Database-336791?style=for-the-badge&logo=postgresql&logoColor=white" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white" /></a>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Git-Conventional%20Commits-F05032?style=for-the-badge&logo=git&logoColor=white" />
+  <img src="https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" />
+  <img src="https://img.shields.io/badge/SonarQube-Code%20Quality-4E9BCD?style=for-the-badge&logo=sonarqube&logoColor=white" />
+  <img src="https://img.shields.io/badge/JaCoCo-Test%20Coverage-800000?style=for-the-badge" />
   <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" />
 </p>
 
@@ -40,12 +48,17 @@ Além da venda de ingressos, o sistema pode oferecer funcionalidades complementa
 
 ### Estado atual do projeto
 
-Atualmente, o projeto encontra-se em sua **fase inicial**, contendo apenas:
+Atualmente, o projeto encontra-se em sua **fase intermediária**, contendo apenas:
 
-* A estrutura base do **backend** em Java com Spring Boot;
-* A estrutura base do **frontend** em Angular;
+* Cadastro de clientes e sessões no **backend**, além de autenticação de usuários
+* Visualização de sessões por data, visualização das informações do filme e sessões dele, criação de sessões e 
+  autenticação no **frontend**
 * Organização do repositório, fluxo de contribuição e padrões de versionamento.
-* Quadro Scrum para organização da equipe
+* **Quadro Scrum** para organização da equipe
+* **SonarQubeCloud** integrado ao repositório para análise do código
+* **JaCoCo** para geração de relatório de cobertura de testes
+* **GitHub Actions** para CI/CD
+* Aplicação online no **Render** [aqui](https://cinema-tickets-frontend-9qnw.onrender.com)
 
 ---
 
@@ -72,6 +85,12 @@ Atualmente, o projeto encontra-se em sua **fase inicial**, contendo apenas:
 * GitHub
 * Conventional Commits
 * Pull Requests com revisão obrigatória
+* GitFlow
+* GitHub Actions (CI)
+* SonarQube
+* JaCoCo
+* Docker
+* Docker Compose
 
 ---
 
@@ -79,66 +98,147 @@ Atualmente, o projeto encontra-se em sua **fase inicial**, contendo apenas:
 
 ### Pré-requisitos
 
-* Java 21 ou superior
-* PostgreSQL
-* Node.js (LTS)
-* npm
-* Git
-
-### Banco de Dados
-
-Antes de rodar o backend, é necessário criar o banco de dados e o usuário no PostgreSQL. Conecte-se ao PostgreSQL como superusuário e execute:
-
-```sql
-CREATE USER cinema_app WITH PASSWORD 'password';
-CREATE DATABASE cinema_tickets OWNER cinema_app;
-GRANT ALL PRIVILEGES ON DATABASE cinema_tickets TO cinema_app;
-```
-
-### Backend
- 
-O projeto já possui um arquivo `application-dev.yaml` em `backend/src/main/resources/` configurado com os valores padrão. Caso tenha usado credenciais diferentes, edite o arquivo antes de prosseguir:
-
-```yaml
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/cinema_tickets
-    username: cinema_app
-    password: password
-
-jwt:
-  secret: "rjfoBSJbdo2DWCXzgWw42ug9VndCxurWHfAh71kq36o="
-  expiration: 86400000
-```
-
-Acesse a pasta `backend` e rode o projeto com o perfil `dev`:
-
-**Linux / macOS:**
-```bash
-cd backend
-mvn spring-boot:run -Dspring-boot.run.profiles=dev
-```
-
-**Windows:**
-```bash
-cd backend
-./mvnw spring-boot:run "-Dspring-boot.run.profiles=dev"
-```
-
-A API estará disponível em `http://localhost:8080`.
-
-### Frontend
+- Docker
+- Docker Compose
+- Git
+Verifique:
 
 ```bash
-cd frontend
-npm install
-ng serve
+docker --version
+docker compose version
 ```
 
-A aplicação estará disponível em:
+---
 
+## Configuração do `.env`
+
+Antes de rodar o projeto, você deve criar seu próprio arquivo `.env` na raiz do projeto.
+
+Existe um arquivo de exemplo chamado `.env.example`. Copie ele:
+
+```bash
+cp .env.example .env
+```
+
+Depois edite o `.env` conforme necessário.
+
+### `.env.example`
+
+```env
+# Senha do usuário do banco de dados PostgreSQL
+CINEMA_TICKETS_DB_PASSWORD=sua-senha-aqui
+
+# Segredo para JWT (JSON Web Tokens)
+JWT_SECRET=sua-senha-aqui
+
+# Coloque o perfil do spring
+SPRING_PROFILES_ACTIVE=dev
+
+# Alterar environment do angular
+CONFIG=development
+
+# Origens permitidas
+CORS_ALLOWED_ORIGINS=http://localhost:4200,http://localhost:5173
+
+# Versão da aplicação
+APP_VERSION=dev
+
+# Tempo de expiração do JWT
+JWT_EXPIRATION_MS=86400000
+```
+
+O `.env` define como a aplicação será executada (perfil dev ou prod, CORS, JWT, etc).
+Verifique o que precisa ser informado em cada application para preencher corretamente o `.env` de cada perfil.
+---
+
+# Ambiente de Desenvolvimento
+
+No ambiente de desenvolvimento utilizamos **Docker Compose**.
+
+### Subindo a aplicação
+
+Na raiz do projeto:
+
+```bash
+docker compose up -d --build
+```
+
+Isso irá:
+
+- Construir as imagens
+- Subir backend
+- Subir frontend
+- Subir PostgreSQL
+- Executar seeders automaticamente
+
+### URLs locais
+
+Frontend:
 ```
 http://localhost:4200
+```
+
+Backend:
+```
+http://localhost:8080
+```
+
+### Seeders
+
+No profile `dev`, os seeders estão ativados. Isso significa que:
+
+- Filmes iniciais são carregados
+- Usuário admin é criado automaticamente
+
+Admin padrão:
+
+```
+email: admin@local.dev
+password: admin1
+```
+
+---
+
+# Ambiente de Produção
+
+Em produção a aplicação está hospedada no **Render**.
+
+Frontend:
+```
+https://cinema-tickets-frontend-9qnw.onrender.com
+```
+
+Backend:
+```
+https://cinema-tickets-eqic.onrender.com
+```
+
+No ambiente de produção:
+
+- O perfil Spring ativo é `prod`
+- O banco é um PostgreSQL gerenciado pelo Render
+- CORS permite apenas o frontend hospedado
+- Seeders de desenvolvimento não são utilizados
+- Bootstrap de admin pode ser ativado via variáveis de ambiente
+
+Exemplo de variáveis utilizadas em produção:
+
+```env
+CINEMA_TICKETS_DB_URL=jdbc:postgresql://dpg-d6gdo6kr85hc7384hl90-a:5432/cinema_tickets_prod
+CINEMA_TICKETS_DB_USERNAME=cinema_tickets_prod_app
+CINEMA_TICKETS_DB_PASSWORD=password
+SPRING_PROFILES_ACTIVE=prod
+CORS_ALLOWED_ORIGINS=https://cinema-tickets-frontend-9qnw.onrender.com
+APP_VERSION=prod
+
+JWT_SECRET=...
+JWT_EXPIRATION_MS=86400000
+
+BOOTSTRAP_ADMIN_ENABLED=true
+BOOTSTRAP_ADMIN_EMAIL=admin@prod.com
+BOOTSTRAP_ADMIN_PASSWORD=password
+BOOTSTRAP_ADMIN_NAME=Admin
+BOOTSTRAP_ADMIN_CPF=00000000000
 ```
 
 ---
@@ -286,18 +386,92 @@ GET http://localhost:8080/sessoes?data=2026-03-01
 
 ## Instruções de Uso
 
-No profile dev, há um perfil de Admin cadastrado, com credenciais:
+Após subir o projeto com Docker, acesse:
 
+```text
+http://localhost:4200
+```
+
+O frontend é o caminho recomendado para usar o sistema no dia a dia. Ele já consome a API local (`http://localhost:8080`) automaticamente.
+
+---
+
+### 1. Login (usuário comum ou admin)
+
+Na tela de login, informe email e senha para entrar no sistema.
+
+No profile `dev`, existe um usuário administrador já criado (seeder):
+
+```text
 email: admin@local.dev
 password: admin1
+```
 
-Use esse **login** para utilizar a funcionalidade de cadastrar Sessões.
+Use esse login para acessar as funcionalidades de criação de sessões.
+
+---
+
+### 2. Cadastro de usuário (Register)
+
+Se você ainda não tiver conta, use a opção de cadastro no frontend.
+
+Você vai preencher os mesmos campos do endpoint `POST /auth/register`:
+
+- Email
+- Senha
+- Nome
+- CPF
+- Celular
+
+Após cadastrar, faça login normalmente.
+
+### 3. Ver sessões por data
+
+Na área de sessões, selecione uma data no seletor/calendário.
+
+O frontend faz a busca usando:
+
+- `GET /sessoes?data=YYYY-MM-DD`
+
+Exemplo de comportamento esperado:
+- Selecionou `2026-03-01` → o sistema lista as sessões daquele dia.
+
+---
+
+### 4. Criar sessão (somente Admin)
+
+Para criar sessões, você precisa estar logado como **Admin**.
+
+Caminho típico no frontend:
+- Clicar em “Criar Sessão”
+- Informar:
+  - Filme (equivale a `filmeId`)
+  - Sala (equivale a `salaId`)
+  - Data e hora de início (equivale a `inicio` no formato ISO)
+  - Tipo (ex: `2D`, `3D`)
+
+Ao salvar, o frontend chama:
+
+- `POST /sessoes` (com JWT automaticamente no `Authorization: Bearer <token>`)
+
+Se você não estiver autenticado como admin (ou sem token válido), a criação será negada.
+
+---
+
+### 5. Visualizar informações de filme da sessão (usuário comum ou admin)
+
+Na tela de filme, o frontend faz a busca usando:
+
+- `GET /filmes/{id}`
+
+Então você tem acesso a todas as informações cadastradas sobre aquele filme e as sessões disponíveis dele
 
 ---
 
 ## Guia de Contribuição
 
 O projeto segue um fluxo de contribuição organizado, utilizando boas práticas de versionamento, colaboração em equipe e gerenciamento de tarefas.
+Além disso, adota práticas modernas de integração contínua, qualidade de código e padronização de ambiente, utilizando **Docker**, **GitHub Actions**, **JaCoCo** e **SonarQube**.
 
 ### Organização da equipe e tarefas
 
@@ -320,6 +494,13 @@ A equipe utiliza o **GitHub Projects (Quadro Scrum)** como ferramenta de organiz
   - uso do padrão **Conventional Commits**;
   - no mínimo **2 revisores**;
   - resolução de todos os comentários antes do merge.
+
+Além disso, todo Pull Request dispara automaticamente um pipeline de **GitHub Actions**, responsável por:
+- Build do projeto;
+- Execução de testes automatizados;
+- Geração de relatório de cobertura com **JaCoCo**;
+- Análise estática de código com **SonarQube**.
+- Deploy automático no **Render** caso o workflow do Actions seja bem-sucedido
 
 ### Padrão de commit
 
