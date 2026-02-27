@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,8 @@ export class AuthService {
 
     constructor(private readonly router: Router) {}
 
-    private readonly apiUrl = 'http://localhost:8080/auth/login';
-    private readonly registerUrl = 'http://localhost:8080/auth/register';
+    private readonly apiUrl = `${environment.apiUrl}/auth/login`;
+    private readonly registerUrl = `${environment.apiUrl}/auth/register`;
 
     private readonly authStatus = new BehaviorSubject<boolean>(this.isAuthenticated());
     authStatus$ = this.authStatus.asObservable();

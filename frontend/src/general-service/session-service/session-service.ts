@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionService {
-  private readonly baseUrl = 'http://localhost:8080';
+  private readonly baseUrl = `${environment.apiUrl}`;
 
   private getHeaders() {
     const token = localStorage.getItem('token');
@@ -31,7 +32,7 @@ export class SessionService {
 
   async salvarSessao(dados: any): Promise<any> {
     const response = await fetch(
-      'http://localhost:8080/sessoes', {
+      `${this.baseUrl}/sessoes`, {
       method: 'POST',
       headers: this.getHeaders(),
       body: JSON.stringify(dados)
