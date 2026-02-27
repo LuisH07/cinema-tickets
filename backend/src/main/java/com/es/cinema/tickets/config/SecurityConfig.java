@@ -52,6 +52,7 @@ public class SecurityConfig {
 
     private HttpSecurity baseSecurityFilterChain(HttpSecurity http) {
         return http
+                // NOSONAR java:S4502 - API stateless com JWT (sem cookies/sessão). CSRF é relevante para auth via cookies
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
