@@ -1,7 +1,9 @@
 package com.es.cinema.tickets.web.controller;
 
+import com.es.cinema.tickets.application.service.AssentoService;
 import com.es.cinema.tickets.application.service.SessaoService;
 import com.es.cinema.tickets.web.dto.request.SessaoRequest;
+import com.es.cinema.tickets.web.dto.response.SessaoAssentosResponse;
 import com.es.cinema.tickets.web.dto.response.SessaoResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 public class SessaoController {
 
     private final SessaoService sessaoService;
+    private final AssentoService assentoService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
@@ -39,5 +42,10 @@ public class SessaoController {
     @GetMapping("/{id}")
     public ResponseEntity<SessaoResponse> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(sessaoService.buscarPorId(id));
+    }
+
+    @GetMapping("/{id}/assentos")
+    public ResponseEntity<SessaoAssentosResponse> listarAssentos(@PathVariable Long id) {
+        return ResponseEntity.ok(assentoService.listarPorSessao(id));
     }
 }
