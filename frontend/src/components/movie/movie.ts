@@ -91,6 +91,10 @@ export class Movie implements OnInit {
     this.cdr.detectChanges();
   }
 
+  getSessaoAtual() {
+    return this.filteredSessions.find(s => s.id === this.idSessionSelected);
+  }
+
   getPoster(): string {
     if (!this.movie?.poster) return '/images/placeholder.jpg';
     return this.movie.poster.startsWith('/') ? this.movie.poster : '/images/' + this.movie.poster;

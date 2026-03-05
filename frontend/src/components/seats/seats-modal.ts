@@ -1,7 +1,10 @@
 import { Component, Input, OnInit, Output, EventEmitter, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SessionService } from '../../general-service/session-service/session-service';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { MovieModel } from '../../app/core/models/movie.model';
+import { CompraResumo } from '../../app/core/models/checkout.model';
 
 interface Seats {
   id: string;
@@ -21,8 +24,11 @@ interface Seats {
 export class SeatsModal implements OnInit {
   private readonly service = inject(SessionService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly router = inject(Router);
 
   @Input() sessaoId!: number;
+  @Input() filme?: MovieModel;
+  @Input() sessaoDados?: any;
   @Output() fechar = new EventEmitter<void>();
 
   assentos: Seats[] = [];
@@ -75,7 +81,23 @@ export class SeatsModal implements OnInit {
   }
 
   confirmarSelecao() {
-    if (this.selecionados.length === 0) return;
-    console.log('Assentos selecionados:', this.selecionados);
-  }
+    const dadosParaCheckout: CompraResumo = {
+      sessaoId: this.sessaoId,
+      filmeTitulo: this.filme?.titulo || 'Filme',
+      filmePoster: this.filme?.poster || '', // Use sua lógica de getPoster() se preferir
+      salaNome: this.sessaoDados?.sala?.nome || 'Sala Padrão',
+      horario: this.sessaoDados?.horario || '--:--',
+      assentosCodigos: this.selecionados,
+      assentosIds: this.assentos
+        .filter(a => this.selecionados.includes(a.codigo))
+        .map(a => a.id),
+      valorTotal: this.assentos
+        .filter(a => this.selecionados.includes(a.codigo))
+        .reduce((acc, a) => acc + a.valor, 0)
+    };
+
+    localStorage.setItem('checkout_data', JSON.stringify(dadosParaCheckout));
+    this.router.navigate(['/checkout']);
+    this.fechar.emit();
+}
 }
