@@ -7,7 +7,7 @@ import { ValidationResponse } from '../../app/core/models/ticket-validation.mode
   templateUrl: './ticket-validation.component.html',
   styleUrls: ['./ticket-validation.component.css']
 })
-export class TicketValidationComponent implements AfterViewInit {
+export class TicketValidation implements AfterViewInit {
   @ViewChild('voucherInput') voucherInput!: ElementRef;
   
   codigoVoucher: string = '';
