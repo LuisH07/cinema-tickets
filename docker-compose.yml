@@ -35,6 +35,8 @@ services:
       JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
       APP_VERSION: ${APP_VERSION}
+      JAVA_TOOL_OPTIONS: "-Duser.timezone=${APP_TIMEZONE:-America/Recife}"
+      TZ: ${APP_TIMEZONE:-America/Recife}
     depends_on:
       db:
         condition: service_healthy
