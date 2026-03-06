@@ -9,7 +9,9 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -49,8 +51,14 @@ public class Pedido {
     @Builder.Default
     private StatusPedido status = StatusPedido.PENDENTE;
 
-    @Column(length = 50, unique = true)
-    private String ingressoId;
+    @ElementCollection
+    @CollectionTable(
+        name = "pedido_ingressos", 
+        joinColumns = @JoinColumn(name = "pedido_id")
+    )
+    @Column(name = "ingresso_codigo", length = 100, nullable = false) 
+    @Builder.Default
+    private List<String> ingressosIds = new ArrayList<>();
 
     @Column(nullable = false)
     @Builder.Default
@@ -65,9 +73,9 @@ public class Pedido {
     @Builder.Default
     private Set<AssentoSessao> assentos = new HashSet<>();
 
-    public void aprovar(String ingressoId) {
+    public void aprovar(List<String> novosIngressos) {
         this.status = StatusPedido.PAGO;
-        this.ingressoId = ingressoId;
+        this.ingressosIds.addAll(novosIngressos);
     }
 
     public void cancelar() {
@@ -76,7 +84,12 @@ public class Pedido {
 
     @Override
     public String toString() {
-        return "Pedido{id=" + id + ", status=" + status + ", ingressoId='" + ingressoId + "'}";
+        return "Pedido{" +
+                "id=" + id +
+                ", status=" + status +
+                ", ingressosIds=" + ingressosIds + 
+                ", valorTotal=" + valorTotal +
+                '}';
     }
 
     @Override

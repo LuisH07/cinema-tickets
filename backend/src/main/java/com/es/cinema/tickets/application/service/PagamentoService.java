@@ -66,7 +66,7 @@ public class PagamentoService {
                 .metodo(request.getMetodo())
                 .assentos(new HashSet<>(assentos))
                 .build();
-        pedido.aprovar(String.join(",", ingressosIds));
+        pedido.aprovar(ingressosIds);
 
         pedidoRepository.save(pedido);
 
