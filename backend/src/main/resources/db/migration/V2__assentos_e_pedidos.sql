@@ -12,6 +12,10 @@ ALTER TABLE assentos_sessao
 ALTER TABLE assentos_sessao
     ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'DISPONIVEL';
 
+-- Adiciona identificador único do ingresso gerado para o assento
+ALTER TABLE assentos_sessao
+    ADD COLUMN ingresso_id VARCHAR(50) UNIQUE;
+
 -- Migra dados existentes do campo ocupado para o novo status
 UPDATE assentos_sessao SET status = 'OCUPADO' WHERE ocupado = TRUE;
 

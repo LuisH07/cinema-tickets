@@ -44,7 +44,14 @@ public class PagamentoService {
         validarValorTotal(request.getValorEsperado(), assentos);
 
         // Marca todos os assentos como VENDIDO dentro da mesma transação
-        assentos.forEach(AssentoSessao::vender);
+        List<String> ingressosIds = assentos.stream()
+                .map(assento -> {
+                    String ingressoId = gerarIngressoId();
+                    assento.vender(ingressoId);
+                    return ingressoId;
+                })
+                .toList();
+
         assentoSessaoRepository.saveAll(assentos);
 
         // Calcula o valor total real
@@ -52,24 +59,21 @@ public class PagamentoService {
                 .map(AssentoSessao::getValor)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        // Gera o identificador único do ingresso
-        String ingressoId = gerarIngressoId();
-
-        // Cria e persiste o pedido como PAGO na mesma transação
+        // Persiste o pedido como PAGO na mesma transação
         Pedido pedido = Pedido.builder()
                 .sessao(sessao)
                 .valorTotal(valorTotal)
                 .metodo(request.getMetodo())
                 .assentos(new HashSet<>(assentos))
                 .build();
-        pedido.aprovar(ingressoId);
+        pedido.aprovar(String.join(",", ingressosIds));
 
         pedidoRepository.save(pedido);
 
         return PagamentoResponse.builder()
                 .status("aprovado")
                 .mensagem("Compra realizada com sucesso!")
-                .ingressoId(ingressoId)
+                .ingressosIds(ingressosIds)
                 .build();
     }
 

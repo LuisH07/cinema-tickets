@@ -52,6 +52,9 @@ public class AssentoSessao {
     @Column(nullable = false, length = 20)
     private StatusAssento status;
 
+    @Column(length = 50, unique = true)
+    private String ingressoId;
+
     public boolean isDisponivel() {
         return StatusAssento.DISPONIVEL.equals(this.status);
     }
@@ -60,12 +63,14 @@ public class AssentoSessao {
         this.status = StatusAssento.OCUPADO;
     }
 
-    public void vender() {
+    public void vender(String ingressoId) {
         this.status = StatusAssento.VENDIDO;
+        this.ingressoId = ingressoId;
     }
 
     public void liberar() {
         this.status = StatusAssento.DISPONIVEL;
+        this.ingressoId = null;
     }
 
     @Override
