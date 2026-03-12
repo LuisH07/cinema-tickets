@@ -16,8 +16,8 @@ import { MoviesCarousel } from '../movies-carousel/movies-carousel';
         <input type="date" 
                (change)="onDateChange()" 
                [(ngModel)]="selectedDate" 
-               [min]="minDate" 
                [max]="maxDate" 
+               [min]="minDate"  
                class="date-picker" />
       </div>
 

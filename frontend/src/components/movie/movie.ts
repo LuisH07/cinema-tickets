@@ -6,11 +6,12 @@ import { MovieModel } from '../../app/core/models/movie.model';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SessionModel } from '../../app/core/models/session.model';
+import { SeatsModal } from '../seats/seats-modal';
 
 @Component({
   selector: 'app-movie',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SeatsModal],
   templateUrl: './movie.html',
   styleUrl: './movie.css',
 })
@@ -20,6 +21,9 @@ export class Movie implements OnInit {
   
   currentDate: string = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0];
   movieId!: number;
+
+  showModalSeats = false;
+  idSessionSelected: number | null = null;
 
   constructor(
     private readonly moviesService: MoviesService,
@@ -78,6 +82,17 @@ export class Movie implements OnInit {
       }));
 
     this.cdr.detectChanges();
+  }
+
+  openSeatsModal(idSessao: number) {
+    console.log('Botão comprar clicado! ID da Sessão:', idSessao);
+    this.idSessionSelected = idSessao;
+    this.showModalSeats = true;
+    this.cdr.detectChanges();
+  }
+
+  getSessaoAtual() {
+    return this.filteredSessions.find(s => s.id === this.idSessionSelected);
   }
 
   getPoster(): string {

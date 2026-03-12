@@ -8,7 +8,10 @@ RUN npm install
 
 # Copia o código e gera o build
 COPY . .
-RUN npm run build
+
+# Por padrão, gera build de produção
+ARG CONFIG=production
+RUN npm run build -- --configuration=$CONFIG
 
 # Servidor Nginx
 FROM nginx:stable-alpine

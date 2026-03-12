@@ -63,12 +63,22 @@
                             </div>
                         </div>
                         
-                        <div class="metadata-item">
-                            <button class="button-buy">
+                        <div class="metadata-item" (click)="openSeatsModal(session.id)">
+                            <button class="button-buy" >
                                 <span class="button-buy-text">{{ session.inicio | date: 'HH:mm' }}</span>
                                 <span class="button-buy-text-hover">Comprar</span>
                             </button>
                         </div>
+
+                        @if (showModalSeats && idSessionSelected) {
+                            <app-seats-modal 
+                                *ngIf="showModalSeats"
+                                [sessaoId]="idSessionSelected!" 
+                                [filme]="movie"
+                                [sessaoDados]="getSessaoAtual()"
+                                (fechar)="showModalSeats = false">
+                            </app-seats-modal>
+                        }
                     </div>
                 } @empty {
                     <p class="no-sessions-message">Nenhuma sessão disponível para a data selecionada.</p>

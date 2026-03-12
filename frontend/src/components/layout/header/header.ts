@@ -10,7 +10,7 @@ import { Router, RouterModule } from '@angular/router';
   template: `
     <header class="header">
       <div class="main-header">
-          <a [routerLink]="authService.isAuthenticated() ? '/home' : '/'" class="logo-wrapper">
+          <a [routerLink]="['/']" class="logo-wrapper">
               <img src="ticket.png" class="logo-img">
               <h1 class="logo-title">Cinema-Tickets</h1>
           </a>
@@ -24,6 +24,11 @@ import { Router, RouterModule } from '@angular/router';
                   [routerLink]="['/cadastro-sessao']">
                   <i class="fa-solid fa-plus"></i>
                   <span class="session-text"> Cadastrar Sessão </span>
+                </button>
+              } @else if (router.url !== '/ingressos') {
+                <button type="button" class="tickets-button" [routerLink]="['/ingressos']">
+                  <span class="login-text">Ingressos</span>
+                  <i class="fa-solid fa-ticket"></i>
                 </button>
               }
               <button type="button" class="logout-button" (click)="onLogout()">

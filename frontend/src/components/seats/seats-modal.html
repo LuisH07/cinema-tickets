@@ -1,0 +1,38 @@
+<div class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Selecione seus assentos</h2>
+      <button class="btn-close" (click)="fechar.emit()">×</button>
+    </div>
+
+    <div class="screen">TELA</div>
+
+    <div class="grid-container" *ngIf="!isLoading">
+        <div class="seating-grid">
+            <div 
+                *ngFor="let assento of assentos" 
+                class="seat" 
+                [ngClass]="assento.status"
+                (click)="toggleAssento(assento)">
+                {{ assento.codigo }}
+            </div>
+        </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><span class="seat disponivel"></span> Disponível</div>
+      <div class="legend-item"><span class="seat selecionado"></span> Selecionado</div>
+      <div class="legend-item"><span class="seat vendido"></span> Vendido</div>
+    </div>
+
+    <div class="modal-footer">
+      <p>Assentos: <strong>{{ selecionados.join(', ') || 'Nenhum' }}</strong></p>
+      <button 
+        class="btn-confirm" 
+        [disabled]="selecionados.length === 0"
+        (click)="confirmarSelecao()">
+        Prosseguir
+      </button>
+    </div>
+  </div>
+</div>

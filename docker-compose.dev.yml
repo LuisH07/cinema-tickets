@@ -31,28 +31,24 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
       CINEMA_TICKETS_DB_PASSWORD: ${CINEMA_TICKETS_DB_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS}
-      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
-      APP_VERSION: ${APP_VERSION}
-      JAVA_TOOL_OPTIONS: "-Duser.timezone=${APP_TIMEZONE:-America/Recife}"
-      TZ: ${APP_TIMEZONE:-America/Recife}
     depends_on:
       db:
         condition: service_healthy
 
   frontend:
-    image: cinema-tickets-frontend
     build:
       context: ./frontend
-      args:
-        CONFIG: ${CONFIG:-development}
+      dockerfile: Dockerfile.dev
     ports:
-      - "4200:80"
-    networks:
-      - public-net
-    depends_on:
-      - backend
+      - "4201:4200"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.angular
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    command: npm start -- --host 0.0.0.0 --poll 2000
 
 networks:
   public-net:

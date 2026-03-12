@@ -1,0 +1,43 @@
+<div class="checkout-wrapper" *ngIf="compra">
+  <div class="checkout-container">
+    
+    <div class="poster-container">
+      <img [src]="compra.filmePoster" [alt]="compra.filmeTitulo">
+    </div>
+    
+    <div class="movie-text-info">
+      <h2>{{ compra.filmeTitulo }}</h2>
+      <p class="detail"><span>SALA</span><br>{{ compra.salaNome }}</p>
+      <p class="detail"><span>HORÁRIO</span><br>{{ compra.horario }}</p>
+      <p class="detail"><span>ASSENTOS</span><br>{{ compra.assentosCodigos.join(', ') }}</p>
+    </div>
+
+    <div class="payment-section">
+      <div class="total-price">
+        <span>Total do Pedido</span>
+        <strong>{{ compra.valorTotal | currency:'BRL' }}</strong>
+      </div>
+
+      <h3>Escolha o pagamento</h3>
+      <div class="payment-methods-grid">
+        <label class="method-card" [class.active]="metodoPagamento === 'pix'">
+          <input type="radio" name="metodo" [(ngModel)]="metodoPagamento" value="pix"> Pix
+        </label>
+        <label class="method-card" [class.active]="metodoPagamento === 'cartao_credito'">
+          <input type="radio" name="metodo" [(ngModel)]="metodoPagamento" value="cartao_credito"> Crédito
+        </label>
+        <label class="method-card" [class.active]="metodoPagamento === 'cartao_debito'">
+          <input type="radio" name="metodo" [(ngModel)]="metodoPagamento" value="cartao_debito"> Débito
+        </label>
+        <label class="method-card" [class.active]="metodoPagamento === 'dinheiro'">
+          <input type="radio" name="metodo" [(ngModel)]="metodoPagamento" value="dinheiro"> Dinheiro
+        </label>
+      </div>
+
+      <button class="btn-confirm" (click)="processarPagamento()" [disabled]="isProcessing">
+        FINALIZAR COMPRA
+      </button>
+    </div>
+
+  </div>
+</div>

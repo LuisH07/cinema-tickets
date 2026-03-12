@@ -180,3 +180,67 @@ INSERT INTO sessoes (inicio, tipo, filme_id, sala_id) VALUES ('2026-02-21 20:30:
 -- Chihiro (Filme 6) na Sala Standard (Sala 4)
 INSERT INTO sessoes (inicio, tipo, filme_id, sala_id) VALUES ('2026-02-21 10:00:00', 'Dublado', 6, 4);
 INSERT INTO sessoes (inicio, tipo, filme_id, sala_id) VALUES ('2026-02-21 13:30:00', 'Dublado', 6, 4);
+
+-- ASSENTOS POR SESSÃO
+-- Fileiras A-B = VIP (R$ 40), últimos 2 assentos de fileiras C+ = PNE (R$ 25), resto = COMUM (R$ 25)
+DO $$
+DECLARE
+    v_sessao        RECORD;
+    v_capacidade    INT;
+    v_fileiras      INT;
+    v_assento_por_f INT := 10;
+    v_pne_por_f     INT := 2;
+    v_fileiras_vip  INT := 2;
+    v_f             INT;
+    v_n             INT;
+    v_letra         TEXT;
+    v_codigo        TEXT;
+    v_assentos_f    INT;
+    v_criados       INT;
+    v_tipo          TEXT;
+    v_valor         NUMERIC(10,2);
+BEGIN
+    FOR v_sessao IN SELECT s.id, sa.capacidade FROM sessoes s JOIN salas sa ON sa.id = s.sala_id LOOP
+        v_capacidade := v_sessao.capacidade;
+        v_fileiras   := CEIL(v_capacidade::FLOAT / v_assento_por_f);
+        v_criados    := 0;
+
+        FOR v_f IN 0..(v_fileiras - 1) LOOP
+            EXIT WHEN v_criados >= v_capacidade;
+            v_letra      := CHR(65 + v_f); -- A, B, C...
+            v_assentos_f := LEAST(v_assento_por_f, v_capacidade - v_criados);
+
+            FOR v_n IN 1..v_assentos_f LOOP
+                v_codigo := v_letra || v_n::TEXT;
+
+                IF v_f < v_fileiras_vip THEN
+                    v_tipo  := 'VIP';
+                    v_valor := 40.00;
+                ELSIF v_n > (v_assentos_f - v_pne_por_f) THEN
+                    v_tipo  := 'PNE';
+                    v_valor := 25.00;
+                ELSE
+                    v_tipo  := 'COMUM';
+                    v_valor := 25.00;
+                END IF;
+
+                INSERT INTO assentos_sessao (sessao_id, codigo, tipo, valor, status)
+                VALUES (v_sessao.id, v_codigo, v_tipo, v_valor, 'DISPONIVEL')
+                ON CONFLICT (sessao_id, codigo) DO NOTHING;
+            END LOOP;
+
+            v_criados := v_criados + v_assentos_f;
+        END LOOP;
+    END LOOP;
+END $$;
+
+-- Simula alguns assentos já vendidos/ocupados para demonstração
+UPDATE assentos_sessao
+SET status = 'VENDIDO'
+WHERE sessao_id = 1
+  AND codigo IN ('A1', 'A2', 'B3', 'C4', 'C5');
+
+UPDATE assentos_sessao
+SET status = 'OCUPADO'
+WHERE sessao_id = 1
+  AND codigo IN ('A3', 'D1');

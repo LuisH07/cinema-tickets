@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Router } from '@angular/router'; 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SessionService } from '../../general-service/session-service/session-service';
 import Swal from 'sweetalert2';
@@ -28,6 +29,9 @@ import Swal from 'sweetalert2';
                 placeholder="Selecione um filme..."
                 [clearable]="false">
               </ng-select>
+              <span class="error-text" *ngIf="filmeId?.touched && filmeId?.errors?.['required']">
+                O filme é obrigatório.
+              </span>
             </div>
           </div>
 
@@ -49,7 +53,6 @@ import Swal from 'sweetalert2';
           </div>
 
           <div class="form-row">
-
             <div class="form-col">
               <label>Tipo de Áudio<span class="required">*</span></label>
               <select formControlName="tipo">
@@ -64,11 +67,24 @@ import Swal from 'sweetalert2';
           <div class="form-row">
             <div class="form-col">
               <label>Data Inicial<span class="required">*</span></label>
-              <input type="date" formControlName="dataInicio">
+              <input type="date" formControlName="dataInicio" 
+                    [class.is-invalid]="dataInicio?.invalid && dataInicio?.touched">
+              
+              <span class="error-text" *ngIf="dataInicio?.errors?.['dataPassada'] && (dataInicio?.touched || dataInicio?.dirty)">
+                Só é possível cadastrar sessões em datas futuras.
+              </span>
+              
+              <span class="error-text" *ngIf="dataInicio?.errors?.['required'] && dataInicio?.touched">
+                A data inicial é obrigatória.
+              </span>
             </div>
+
             <div class="form-col">
               <label>Data Final<span class="required">*</span></label>
               <input type="date" formControlName="dataFim">
+              <span class="error-text" *ngIf="dataFim?.touched && sessaoForm.errors?.['periodoInvalido']">
+                A data final não pode ser menor que a inicial.
+              </span>
             </div>
           </div>
 
@@ -89,6 +105,7 @@ export class Sessao implements OnInit {
   private readonly service = inject(SessionService);
   private readonly fb = inject(FormBuilder);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly router = inject(Router);
 
   sessaoForm: FormGroup;
   filmes: any[] = [];
@@ -102,12 +119,37 @@ export class Sessao implements OnInit {
       horario: ['', Validators.required],
       tipo: ['Dublado', Validators.required],
       classificacao: ['Livre', Validators.required],
-      dataInicio: ['', Validators.required],
+      dataInicio: ['', [Validators.required, this.dataFuturaValidator]],
       dataFim: ['', Validators.required]
-    });
+    }, { validators: this.periodoValidator }); 
   }
 
-  // Getters para validação
+  dataFuturaValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+    
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    const [ano, mes, dia] = control.value.split('-').map(Number);
+    const dataInput = new Date(ano, mes - 1, dia);
+
+    if (dataInput <= hoje) {
+      return { dataPassada: true };
+    }
+
+    return null;
+  }
+
+  periodoValidator(group: AbstractControl): ValidationErrors | null {
+    const inicio = group.get('dataInicio')?.value;
+    const fim = group.get('dataFim')?.value;
+
+    if (inicio && fim && new Date(fim) < new Date(inicio)) {
+      return { periodoInvalido: true };
+    }
+    return null;
+  }
+
   get filmeId() { return this.sessaoForm.get('filmeId'); }
   get salaId() { return this.sessaoForm.get('salaId'); }
   get horario() { return this.sessaoForm.get('horario'); }
@@ -116,15 +158,9 @@ export class Sessao implements OnInit {
 
   async ngOnInit() {
     try {
-      const resFilmes = await this.service.listarFilmes();
-      console.log('Filmes recebidos:', resFilmes); // DEBUG: Veja se aparece no console do F12
-      this.filmes = resFilmes;
-
-      const resSalas = await this.service.listarSalas();
-      console.log('Salas recebidas:', resSalas);
-      this.salas = resSalas;
-
-      this.cdr.detectChanges(); // FORÇA A TELA A ATUALIZAR
+      this.filmes = await this.service.listarFilmes();
+      this.salas = await this.service.listarSalas();
+      this.cdr.detectChanges();
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
     }
@@ -132,63 +168,51 @@ export class Sessao implements OnInit {
 
   async onSubmit() {
     if (this.sessaoForm.invalid) {
-      this.sessaoForm.markAllAsTouched(); 
-      return;
-    }
-
-    if (this.isLoading) return;
-
-    const { dataInicio, dataFim } = this.sessaoForm.value;
-    
-    // Validação de data retroativa (conforme solicitado anteriormente)
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0);
-
-    const dInicio = new Date(dataInicio + 'T00:00:00');
-    const dFim = new Date(dataFim + 'T00:00:00');
-
-    if (dInicio < hoje) {
-      Swal.fire({ icon: 'warning', title: 'Data Inválida', text: 'Não é possível cadastrar sessões em datas passadas.', confirmButtonColor: '#c91432' });
-      return;
-    }
-
-    if (dFim < dInicio) {
-      Swal.fire({ icon: 'warning', title: 'Atenção', text: 'A data final deve ser maior ou igual à inicial.', confirmButtonColor: '#c91432' });
+      this.sessaoForm.markAllAsTouched();
+      
+      if (this.dataInicio?.errors?.['dataPassada']) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Data Inválida',
+          text: 'Só é possível cadastrar sessões em datas futuras.',
+          confirmButtonColor: '#c91432'
+        });
+      }
       return;
     }
 
     this.isLoading = true;
     try {
-      let dataAtual = new Date(dInicio);
+      const { dataInicio, dataFim, horario, filmeId, salaId, tipo } = this.sessaoForm.value;
+      let dataAtual = new Date(dataInicio + 'T00:00:00');
+      const dFim = new Date(dataFim + 'T00:00:00');
       
       while (dataAtual <= dFim) {
-        
-        const dataFormatada = dataAtual.toISOString().split('T')[0];
+        const ano = dataAtual.getFullYear();
+        const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+        const dia = String(dataAtual.getDate()).padStart(2, '0');
         
         const payload = {
-          filmeId: Number(this.sessaoForm.value.filmeId), 
-          salaId: Number(this.sessaoForm.value.salaId),
-          tipo: this.sessaoForm.value.tipo,
-          inicio: `${dataFormatada}T${this.sessaoForm.value.horario}:00` // <-- Junta data, o 'T', o horário e os segundos
+          filmeId: Number(filmeId), 
+          salaId: Number(salaId),
+          tipo: tipo,
+          inicio: `${ano}-${mes}-${dia}T${horario}:00`
         };
-
-        console.log('Enviando para o Back-end:', payload);
         
         await this.service.salvarSessao(payload);
         dataAtual.setDate(dataAtual.getDate() + 1);
       }
 
-      await Swal.fire({
-        icon: 'success',
-        title: 'Sucesso!',
-        text: 'Todas as sessões do período foram criadas.',
-        confirmButtonColor: '#c91432'
+      Swal.fire({ 
+        icon: 'success', 
+        title: 'Sucesso!', 
+        text: 'Sessões criadas com sucesso!', 
+        confirmButtonColor: '#c91432' 
+      }).then(() => {
+        this.router.navigate(['/']); 
       });
-      
-      this.sessaoForm.reset({ tipo: 'Dublado', classificacao: 'Livre' });
 
     } catch (error: any) {
-      // Captura o erro detalhado que o fetch lança no seu Service
       const msg = error.detail || error.message || 'Erro ao comunicar com o servidor.';
       Swal.fire({ icon: 'error', title: 'Erro', text: msg, confirmButtonColor: '#c91432' });
     } finally {

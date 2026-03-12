@@ -56,4 +56,11 @@ export class SessionService {
     return response.json();
   }
 
+  async getAssentos(sessaoId: number): Promise<any> {
+    const response = await fetch(`${this.baseUrl}/sessoes/${sessaoId}/assentos`, { 
+      headers: this.getHeaders() 
+    });
+    if (!response.ok) throw new Error('Erro ao buscar mapa de assentos');
+    return response.json();
+  }
 }

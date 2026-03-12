@@ -1,0 +1,105 @@
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+}
+
+.modal-content {
+    background: #ffffff; /* Modal Branco */
+    padding: 25px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 550px;
+    color: #333;
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+}
+
+.screen {
+    width: 80%;
+    height: 8px;
+    background: #ddd;
+    margin: 0 auto 30px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 11px;
+    color: #999;
+    line-height: 25px;
+}
+
+/* O GRID QUE ESTAVA FALTANDO */
+.seating-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr); /* 10 colunas */
+    gap: 8px;
+    margin-bottom: 25px;
+    justify-items: center;
+}
+
+.seat {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* Estados dos assentos */
+.disponivel { background: #e0e0e0; color: #777; }
+.selecionado { background: #c91432 !important; color: white !important; transform: scale(1.1); }
+.vendido { background: #333; color: #f5eeee; cursor: not-allowed}
+
+.legend {
+    display: flex;
+    justify-content: space-around;
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.legend-item .seat { width: 18px; height: 18px; cursor: default; }
+
+.btn-confirm {
+    width: 100%;
+    padding: 15px;
+    background: #c91432;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-confirm:disabled { background: #ccc; cursor: not-allowed; }

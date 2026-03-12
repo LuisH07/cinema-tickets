@@ -177,3 +177,31 @@ input[list]::-webkit-calendar-picker-indicator {
     font-weight: bold;
 }
 
+input.ng-invalid.ng-touched, 
+select.ng-invalid.ng-touched,
+.custom-select.ng-invalid.ng-touched .ng-select-container {
+    border: 2px solid #ff4d4d !important;
+    transition: all 0.3s ease;
+}
+
+.error-text {
+    color: #ff4d4d;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    animation: shake 0.4s ease-in-out;
+}
+
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+input.ng-invalid.ng-touched:hover {
+    border-color: #e60000 !important;
+}
