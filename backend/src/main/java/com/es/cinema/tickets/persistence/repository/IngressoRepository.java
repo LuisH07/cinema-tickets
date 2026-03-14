@@ -33,6 +33,18 @@ public interface IngressoRepository extends JpaRepository<Ingresso, Long> {
               JOIN FETCH s.filme
               JOIN FETCH s.sala
               JOIN FETCH p.assentos
+              JOIN FETCH i.usuario
+            WHERE i.codigoAutenticacao = :codigoAutenticacao
+            """)
+    Optional<Ingresso> findByCodigoAutenticacaoComDetalhes(@Param("codigoAutenticacao") String codigoAutenticacao);
+
+    @Query("""
+            SELECT i FROM Ingresso i
+              JOIN FETCH i.pedido p
+              JOIN FETCH p.sessao s
+              JOIN FETCH s.filme
+              JOIN FETCH s.sala
+              JOIN FETCH p.assentos
             WHERE i.usuario.id = :usuarioId
             ORDER BY i.criadoEm DESC
             """)

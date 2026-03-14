@@ -25,7 +25,7 @@ public class IngressoMapper {
 
         return IngressoDetalheResponse.builder()
                 .ingressoId(ingresso.getCodigo())
-                .status("confirmado")
+                .status(ingresso.getStatus().name().toLowerCase())
                 .codigoAutenticacao(ingresso.getCodigoAutenticacao())
                 .cliente(IngressoDetalheResponse.ClienteResponse.builder()
                         .nome(ingresso.getUsuario().getNome())
@@ -57,7 +57,7 @@ public class IngressoMapper {
                 .horario(sessao.getInicio().toLocalTime().toString())
                 .sala(sessao.getSala().getNome())
                 .assentos(codigosAssentos)
-                .status("confirmado")
+                .status(ingresso.getStatus().name().toLowerCase())
                 .build();
     }
 
