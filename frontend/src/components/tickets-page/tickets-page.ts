@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild } from '@an
 import { CommonModule } from '@angular/common';
 import { TicketsService } from '../../general-service/tickets-service/tickets-service';
 import { IngressoService } from '../../general-service/ingresso-service/ingresso.service';
+import { ReviewService } from '../../general-service/review-service/review-service';
 import { Ticket } from '../../app/core/models/ticket.model';
 
 @Component({
@@ -14,13 +15,11 @@ import { Ticket } from '../../app/core/models/ticket.model';
         <h1>Meus Ingressos:</h1>
       </div>
 
-      <!-- Loading State -->
       <div class="loading-container" *ngIf="isLoading">
         <div class="spinner"></div>
         <p>Carregando seus ingressos...</p>
       </div>
 
-      <!-- Error State -->
       <div class="error-container" *ngIf="hasError && !isLoading">
         <div class="error-icon">!</div>
         <h3>Erro ao carregar ingressos</h3>
@@ -28,7 +27,6 @@ import { Ticket } from '../../app/core/models/ticket.model';
         <button class="retry-btn" (click)="retryLoad()">Tentar novamente</button>
       </div>
 
-      <!-- Tickets Content -->
       <div class="content-container" *ngIf="!isLoading && !hasError">
         <div class="tickets-horizontal-list" *ngIf="sortedTickets.length > 0">
           <div
@@ -41,6 +39,8 @@ import { Ticket } from '../../app/core/models/ticket.model';
               <span
                 class="ticket-status"
                 [class.ticket-status--confirmed]="ticket.status === 'confirmado'"
+                [class.ticket-status--used]="ticket.status === 'UTILIZADO'"
+                [class.ticket-status--rated]="ticket.status === 'AVALIADO'"
               >
                 {{ ticket.status }}
               </span>
@@ -72,6 +72,38 @@ import { Ticket } from '../../app/core/models/ticket.model';
               </div>
             </div>
 
+            <div class="rating-section" *ngIf="ticket.status === 'UTILIZADO'">
+              <div class="rating-container">
+                <span class="rating-label">Avalie o filme:</span>
+                <div class="stars-container">
+                  <span
+                    *ngFor="let star of [1,2,3,4,5]; let i = index"
+                    class="star star-clickable"
+                    [class.star-filled]="i < (tempRatings[ticket.id] || 0)"
+                    [class.star-loading]="isRatingLoading[ticket.id]"
+                    (click)="!isRatingLoading[ticket.id] && setTempRating(ticket.id, i + 1)"
+                  >
+                    ★
+                  </span>
+                </div>
+                
+                <button 
+                  class="confirm-rating-btn"
+                  *ngIf="tempRatings[ticket.id] > 0"
+                  (click)="submitRating(ticket)"
+                  [disabled]="isRatingLoading[ticket.id]"
+                >
+                  <span *ngIf="!isRatingLoading[ticket.id]">Confirmar avaliação</span>
+                  <span *ngIf="isRatingLoading[ticket.id]">Enviando...</span>
+                </button>
+              </div>
+            </div>
+            <div class="rating-section rating-section--rated" *ngIf="ticket.status === 'AVALIADO'">
+              <div class="rating-display">
+                <span class="rating-label">Filme avaliado:</span>
+                <span class="rated-message">✓ Obrigado pela sua avaliação!</span>
+              </div>
+            </div>
             <button
               class="ticket-action-btn"
               [class.ticket-action-btn--past]="isDatePassed(ticket.data)"
@@ -82,64 +114,9 @@ import { Ticket } from '../../app/core/models/ticket.model';
             </button>
           </div>
         </div>
-
         <div class="empty-state" *ngIf="sortedTickets.length === 0">
           <h3>Nenhum ingresso encontrado</h3>
           <p>Você ainda não possui ingressos comprados.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="pdf-render-container">
-      <div #ticketTemplate class="ticket-pdf-container" *ngIf="selectedTicket">
-        <div class="ticket-pdf">
-            <div class="ticket-left">
-            <div class="cinema-brand">
-              <img src="ticket.png" class="cinema-logo" alt="CINE">
-              <span class="cinema-name">CINE</span>
-            </div>
-            <div class="film-section">
-              <div class="film-label">FILME</div>
-              <div class="film-title">{{ selectedTicket.filme }}</div>
-            </div>
-            <div class="date-box">
-              {{ selectedTicket.data | date:'dd/MM/yyyy' }}
-            </div>
-            <div class="session-details">
-              <div class="detail">
-                <span class="detail-label">HORÁRIO</span>
-                <span class="detail-value highlight-red">{{ selectedTicket.horario }}</span>
-              </div>
-              <div class="detail">
-                <span class="detail-label">SALA</span>
-                <span class="detail-value highlight-orange">{{ selectedTicket.sala }}</span>
-              </div>
-              <div class="detail">
-                <span class="detail-label">ASSENTO</span>
-                <span class="detail-value highlight-green">{{ selectedTicket.assentos }}</span>
-              </div>
-            </div>
-            <div class="status-section">
-              <span class="status-badge" [class.status-confirmed]="selectedTicket.status === 'confirmado'">
-                {{ selectedTicket.status }}
-              </span>
-            </div>
-          </div>
-          <div class="ticket-right">
-            <div class="ticket-id-section">
-              <div class="ticket-id-label">INGRESSO #</div>
-              <div class="ticket-id-value">{{ selectedTicket.id }}</div>
-            </div>
-            <div class="barcode-section">
-              <div class="barcode-bars"></div>
-              <div class="barcode-number">{{ selectedTicket.id }}</div>
-            </div>
-            <div class="legal-info">
-              <div class="legal-line">Apresente na entrada da sala</div>
-              <div class="legal-line small">Válido apenas para esta sessão</div>
-            </div>
-          </div>
-          <div class="popcorn-overlay"></div>
         </div>
       </div>
     </div>
@@ -156,9 +133,13 @@ export class TicketsPage implements OnInit {
   errorMessage = '';
   selectedTicket: Ticket | null = null;
 
+  tempRatings: { [ticketId: string]: number } = {};
+  isRatingLoading: { [ticketId: string]: boolean } = {};
+
   constructor(
     private readonly ticketsService: TicketsService,
     private readonly ingressoService: IngressoService,
+    private readonly reviewService: ReviewService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -235,7 +216,6 @@ export class TicketsPage implements OnInit {
 
   async generateTicket(ticket: Ticket): Promise<void> {
     try {
-
       const dados = {
         filmeTitulo: ticket.filme,
         salaNome: ticket.sala,
@@ -250,6 +230,31 @@ export class TicketsPage implements OnInit {
     } catch (error) {
       console.error('Erro ao gerar PDF:', error);
       alert('Erro ao gerar o PDF. Tente novamente.');
+    }
+  }
+
+  setTempRating(ticketId: string, rating: number): void {
+    this.tempRatings[ticketId] = rating;
+  }
+
+  async submitRating(ticket: Ticket): Promise<void> {
+    const rating = this.tempRatings[ticket.id];
+    if (!rating || rating < 1 || rating > 5) {
+      alert('Por favor, selecione uma nota entre 1 e 5 estrelas');
+      return;
+    }
+
+    this.isRatingLoading[ticket.id] = true;
+
+    try {
+      await this.reviewService.avaliarTicket(ticket.id, rating);
+      await this.loadData();
+    } catch (error) {
+      console.error('Erro ao enviar avaliação:', error);
+      alert('Erro ao enviar avaliação. Tente novamente.');
+    } finally {
+      this.isRatingLoading[ticket.id] = false;
+      this.cdr.detectChanges();
     }
   }
 }

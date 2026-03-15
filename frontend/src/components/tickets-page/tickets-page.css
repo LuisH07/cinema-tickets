@@ -274,248 +274,92 @@
 	margin-bottom: 15px;
 }
 
-/* A partir daqui, css do ticket, favor não mexer: */
+/* Css da parte de avaliação */
 
-.pdf-render-container {
-    position: fixed;
-    left: -9999px;
-    top: 0;
-    width: 148mm;
-    height: 63mm;
-    overflow: visible;
-    background: white;
-    z-index: -1;
+.ticket-status--used {
+  	background-color: gold;
+  	color: white;
 }
 
-.ticket-pdf-container {
-    width: 148mm;
-    height: 63mm;
-    background: white;
-    font-family: 'Helvetica', 'Arial', sans-serif;
-    position: relative;
-    overflow: hidden;
-    box-sizing: border-box;
+.ticket-status--rated {
+  	background-color: var(--success);
+  	color: white;
 }
 
-.ticket-pdf {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    background: white;
+.rating-section {
+  	padding: 15px 20px;
+  	border-top: 1px solid #eee;
+  	background-color: #fafafa;
 }
 
-.popcorn-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('/popcorn.png') repeat;
-    opacity: 0.06;
-    pointer-events: none;
-    z-index: 0;
+.rating-section--rated {
+  	background-color: #e8f5e8;
 }
 
-.ticket-left {
-    width: 60%;
-    padding: 15px 18px;
-    position: relative;
-    z-index: 2;
-    border-right: 2px dashed #fa9f18;
-    display: flex;
-    flex-direction: column;
-    background: white;
+.rating-container, .rating-display {
+  	display: flex;
+  	flex-direction: column;
+  	gap: 10px;
 }
 
-.ticket-right {
-    width: 40%;
-    padding: 18px 15px;
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background: #fafafa;
+.rating-label {
+  	font-size: 0.9rem;
+  	color: gray;
+  	font-weight: 500;
 }
 
-.cinema-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
+.stars-container {
+  	display: flex;
+  	gap: 8px;
+  	justify-content: center;
 }
 
-.cinema-logo {
-    width: 38px;
-    height: 38px;
-    object-fit: contain;
+.star {
+  	font-size: 28px;
+  	color: #ddd;
+  	transition: all 0.2s;
 }
 
-.cinema-name {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--primary-color);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+.star-clickable {
+  	cursor: pointer;
 }
 
-.film-section {
-    margin-bottom: 12px;
+.star-clickable:hover {
+  	transform: scale(1.2);
+  	color: gold;
 }
 
-.film-label {
-    font-size: 9px;
-    color: #999;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 3px;
+.star-filled {
+  	color: gold;
 }
 
-.film-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: #222;
-    line-height: 1.2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-transform: uppercase;
+.star-loading {
+  	opacity: 0.5;
+  	pointer-events: none;
 }
 
-.date-box {
-    background: var(--primary-color);
-    color: white;
-    padding: 6px 16px;
-    border-radius: 30px;
-    font-size: 14px;
-    font-weight: bold;
-    display: inline-block;
-    margin: 10px 0 15px;
-    width: fit-content;
-    letter-spacing: 0.5px;
+.confirm-rating-btn {
+  	background-color: var(--success);
+  	color: white;
+  	border: none;
+  	padding: 8px 16px;
+  	border-radius: 4px;
+  	cursor: pointer;
+  	font-size: 0.9rem;
+  	transition: background-color 0.2s;
 }
 
-.session-details {
-    display: flex;
-    gap: 15px;
-    margin: 15px 0;
+.confirm-rating-btn:hover:not(:disabled) {
+  	background-color: var(--success);
 }
 
-.detail {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 50px;
+.confirm-rating-btn:disabled {
+  	background-color: #cccccc;
+  	cursor: not-allowed;
 }
 
-.detail-label {
-    font-size: 8px;
-    color: #999;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin-bottom: 3px;
-}
-
-.detail-value {
-    font-size: 18px;
-    font-weight: 800;
-    line-height: 1.2;
-}
-
-.highlight-red { color: var(--primary-color); }
-.highlight-orange { color: var(--secondary-color); }
-.highlight-green { color: #4caf50; }
-
-.status-section {
-    margin-top: auto;
-}
-
-.status-badge {
-    display: inline-block;
-    padding: 5px 15px;
-    border-radius: 25px;
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    background: #666;
-    color: white;
-}
-
-.status-confirmed {
-    background: #4caf50;
-}
-
-.ticket-id-section {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.ticket-id-label {
-    font-size: 8px;
-    color: #999;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 5px;
-}
-
-.ticket-id-value {
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    font-weight: 600;
-    color: #333;
-    background: white;
-    padding: 8px 10px;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-    word-break: break-all;
-}
-
-.barcode-section {
-    text-align: center;
-    margin: 15px 0;
-}
-
-.barcode-bars {
-    height: 40px;
-    background: repeating-linear-gradient(
-        90deg,
-        #000,
-        #000 2px,
-        #fff 2px,
-        #fff 4px
-    );
-    border-radius: 4px;
-    margin-bottom: 8px;
-    border: 1px solid #eee;
-}
-
-.barcode-number {
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    color: #666;
-    font-weight: 600;
-    letter-spacing: 1px;
-}
-
-.legal-info {
-    text-align: center;
-    margin-top: auto;
-    padding-top: 10px;
-    border-top: 1px solid #ddd;
-}
-
-.legal-line {
-    font-size: 8px;
-    color: #888;
-    font-weight: 500;
-}
-
-.legal-line.small {
-    font-size: 7px;
-    color: #aaa;
-    margin-top: 3px;
-    font-style: italic;
+.rated-message {
+  	color: var(--success);
+  	font-weight: 500;
+  	font-size: 0.9rem;
 }

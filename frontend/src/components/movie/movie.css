@@ -255,3 +255,50 @@
     margin-top: 20px;
     font-size: 1.1rem;
 }
+
+/* Css da parte de estrelas */
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 0.5rem;
+}
+
+.stars-outer {
+    position: relative;
+    display: inline-block;
+    font-size: 22px;
+}
+
+.stars-outer::before {
+    content: "★★★★★";
+    color: lightgray;
+    -webkit-text-stroke: 0.6px gray;
+}
+
+.stars-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.stars-inner::before {
+    content: "★★★★★";
+    color: gold;
+    -webkit-text-stroke: 0.6px black;
+}
+
+.rating-number {
+    margin-top: 0.3rem;
+    font-size: 14px;
+    color: gray;
+}
+
+.rating-unavailable {
+    margin-top: 1rem;
+    color: darkgray;
+    font-size: 14px;
+}

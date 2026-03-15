@@ -84,6 +84,16 @@
                     <p class="no-sessions-message">Nenhuma sessão disponível para a data selecionada.</p>
                 }
             </div>
+            @if (movie?.nota !== undefined && movie?.nota !== null) {
+                <div class="rating">
+                    <div class="stars-outer">
+                        <div class="stars-inner" [style.width.%]="movie.nota * 20"></div>
+                    </div>
+                    <span class="rating-number">{{ movie.nota.toFixed(1) }}</span>
+                </div>
+            } @else {
+                <div class="rating-unavailable">Nota indisponível.</div>
+            }
         </div>
     </div>
 } @else {

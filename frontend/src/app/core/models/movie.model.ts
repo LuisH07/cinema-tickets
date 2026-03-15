@@ -9,4 +9,5 @@ export interface MovieModel {
     diretores: string[];
     sinopse: string;
     elenco: string[];
+    nota: number;
 }
