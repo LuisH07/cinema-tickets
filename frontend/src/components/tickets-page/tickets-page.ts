@@ -32,9 +32,10 @@ import { Ticket } from '../../app/core/models/ticket.model';
           <div
             class="ticket-card"
             *ngFor="let ticket of sortedTickets; trackBy: trackByTicket"
-            [class.ticket-card--past]="isDatePassed(ticket.data)"
+            [class.ticket-card--past]="isDatePassed(ticket.data, ticket.horario)"
+            [class.ticket-card--with-rating]="ticket.status === 'UTILIZADO' || ticket.status === 'AVALIADO'"
           >
-            <div class="ticket-header" [class.ticket-header--past]="isDatePassed(ticket.data)">
+            <div class="ticket-header" [class.ticket-header--past]="isDatePassed(ticket.data, ticket.horario)">
               <span class="ticket-id">{{ ticket.id }}</span>
               <span
                 class="ticket-status"
@@ -66,54 +67,58 @@ import { Ticket } from '../../app/core/models/ticket.model';
                 </div>
 
                 <div class="detail-item">
-                  <span class="detail-label">Assento:</span>
+                  <span class="detail-label">Assentos:</span>
                   <span>{{ ticket.assentos.join(', ') }}</span>
                 </div>
               </div>
             </div>
-
-            <div class="rating-section" *ngIf="ticket.status === 'UTILIZADO'">
-              <div class="rating-container">
-                <span class="rating-label">Avalie o filme:</span>
-                <div class="stars-container">
-                  <span
-                    *ngFor="let star of [1,2,3,4,5]; let i = index"
-                    class="star star-clickable"
-                    [class.star-filled]="i < (tempRatings[ticket.id] || 0)"
-                    [class.star-loading]="isRatingLoading[ticket.id]"
-                    (click)="!isRatingLoading[ticket.id] && setTempRating(ticket.id, i + 1)"
-                  >
-                    ★
-                  </span>
-                </div>
-                
-                <button 
-                  class="confirm-rating-btn"
-                  *ngIf="tempRatings[ticket.id] > 0"
-                  (click)="submitRating(ticket)"
-                  [disabled]="isRatingLoading[ticket.id]"
-                >
-                  <span *ngIf="!isRatingLoading[ticket.id]">Confirmar avaliação</span>
-                  <span *ngIf="isRatingLoading[ticket.id]">Enviando...</span>
-                </button>
-              </div>
-            </div>
-            <div class="rating-section rating-section--rated" *ngIf="ticket.status === 'AVALIADO'">
-              <div class="rating-display">
-                <span class="rating-label">Filme avaliado:</span>
-                <span class="rated-message">✓ Obrigado pela sua avaliação!</span>
-              </div>
-            </div>
             <button
+              *ngIf="ticket.status === 'confirmado'"
               class="ticket-action-btn"
-              [class.ticket-action-btn--past]="isDatePassed(ticket.data)"
-              [disabled]="isDatePassed(ticket.data)"
+              [class.ticket-action-btn--past]="isDatePassed(ticket.data, ticket.horario)"
+              [disabled]="isDatePassed(ticket.data, ticket.horario)"
               (click)="generateTicket(ticket)"
             >
-              {{ isDatePassed(ticket.data) ? 'Sessão Encerrada' : 'Baixar Ingresso' }}
+              {{ isDatePassed(ticket.data, ticket.horario) ? 'Sessão Encerrada' : 'Baixar Ingresso' }}
             </button>
+            <div class="ticket-footer" *ngIf="ticket.status === 'UTILIZADO' || ticket.status === 'AVALIADO'">
+              <div class="rating-section" *ngIf="ticket.status === 'UTILIZADO'">
+                <div class="rating-container">
+                  <span class="rating-label">Avalie o filme:</span>
+                  <div class="stars-container">
+                    <span
+                      *ngFor="let star of [1,2,3,4,5]; let i = index"
+                      class="star star-clickable"
+                      [class.star-filled]="i < (tempRatings[ticket.id] || 0)"
+                      [class.star-loading]="isRatingLoading[ticket.id]"
+                      (click)="!isRatingLoading[ticket.id] && setTempRating(ticket.id, i + 1)"
+                    >
+                      ★
+                    </span>
+                  </div>
+                  
+                  <button 
+                    class="confirm-rating-btn"
+                    *ngIf="tempRatings[ticket.id] > 0"
+                    (click)="submitRating(ticket)"
+                    [disabled]="isRatingLoading[ticket.id]"
+                  >
+                    <span *ngIf="!isRatingLoading[ticket.id]">Confirmar avaliação</span>
+                    <span *ngIf="isRatingLoading[ticket.id]">Enviando...</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="rating-section rating-section--rated" *ngIf="ticket.status === 'AVALIADO'">
+                <div class="rating-display">
+                  <span class="rating-label">Filme avaliado:</span>
+                  <span class="rated-message">✓ Obrigado pela sua avaliação!</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
         <div class="empty-state" *ngIf="sortedTickets.length === 0">
           <h3>Nenhum ingresso encontrado</h3>
           <p>Você ainda não possui ingressos comprados.</p>
@@ -158,6 +163,7 @@ export class TicketsPage implements OnInit {
       if (response && Array.isArray(response)) {
         this.tickets = response;
         this.sortTickets();
+        this.tickets[0].status = "UTILIZADO";
         console.log('Tickets carregados:', this.tickets.length);
       } else {
         throw new Error('Resposta inválida do servidor');
@@ -203,11 +209,27 @@ export class TicketsPage implements OnInit {
     });
   }
 
-  isDatePassed(date: string): boolean {
-    const ticketDate = new Date(date);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return ticketDate < today;
+  isDatePassed(date: string, horario: string): boolean {
+    console.log('=== DEBUG isDatePassed ===');
+    console.log('Data recebida (string):', date);
+    console.log('Horário recebido:', horario);
+    
+    // Cria data do ticket (assumindo que a data vem no formato ISO ou yyyy-mm-dd)
+    const ticketDateTime = new Date(`${date}T${horario}:00`);
+    
+    console.log('TicketDateTime (objeto Date):', ticketDateTime);
+    console.log('TicketDateTime ISO:', ticketDateTime.toISOString());
+    console.log('TicketDateTime local:', ticketDateTime.toString());
+    
+    const now = new Date();
+    console.log('Agora (objeto Date):', now);
+    console.log('Agora ISO:', now.toISOString());
+    console.log('Agora local:', now.toString());
+    
+    console.log('Ticket < agora?', ticketDateTime < now);
+    console.log('==========================');
+    
+    return ticketDateTime < now;
   }
 
   trackByTicket(index: number, ticket: Ticket): string {

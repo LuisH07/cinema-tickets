@@ -136,6 +136,8 @@
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
 	display: flex;
 	flex-direction: column;
+	height: 100%;
+  	min-height: 200px;
 }
 
 .ticket-card:hover:not(.ticket-card--past) {
@@ -149,6 +151,10 @@
 	background: #f9f9f9;
 }
 
+.ticket-card--with-rating {
+  	min-height: 380px;
+}
+
 .ticket-header {
 	padding: 8px 10px;
 	background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
@@ -160,6 +166,15 @@
 
 .ticket-header--past {
 	background: #888;
+}
+
+.ticket-footer {
+  	margin-top: auto;
+  	padding: 15px 20px;
+  	border-top: 1px solid #eee;
+  	background-color: #fafafa;
+  	border-bottom-left-radius: 8px;
+  	border-bottom-right-radius: 8px;
 }
 
 .ticket-id {
@@ -221,6 +236,7 @@
 
 .ticket-action-btn {
 	margin: 0 10px 10px 10px;
+	margin-top: auto;
 	padding: 6px;
 	background: var(--secondary-color);
 	color: white;
@@ -339,18 +355,22 @@
 }
 
 .confirm-rating-btn {
-  	background-color: var(--success);
-  	color: white;
-  	border: none;
-  	padding: 8px 16px;
-  	border-radius: 4px;
-  	cursor: pointer;
-  	font-size: 0.9rem;
-  	transition: background-color 0.2s;
+  	margin: 0 10px 10px 10px;
+	padding: 6px;
+	background: var(--success);
+	color: white;
+	border: none;
+	border-radius: 5px;
+	font-size: 0.75rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
 }
 
 .confirm-rating-btn:hover:not(:disabled) {
-  	background-color: var(--success);
+	background: var(--success);
+	transform: translateY(-1px);
+	box-shadow: 0 3px 6px rgba(0, 75, 3, 0.3);
 }
 
 .confirm-rating-btn:disabled {
