@@ -25,6 +25,13 @@ import { Router, RouterModule } from '@angular/router';
                   <i class="fa-solid fa-plus"></i>
                   <span class="session-text"> Cadastrar Sessão </span>
                 </button>
+                <button 
+                  type="button" 
+                  class="validate-ticket-button" 
+                  [routerLink]="['/validar-ingresso']">
+                  <i class="fa-solid fa-ticket"></i>
+                  <span class="session-text"> Validar Ingresso </span>
+                </button>
               } @else if (router.url !== '/ingressos') {
                 <button type="button" class="tickets-button" [routerLink]="['/ingressos']">
                   <span class="login-text">Ingressos</span>

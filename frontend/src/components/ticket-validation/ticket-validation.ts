@@ -1,7 +1,8 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { TicketValidationService } from '../../general-service/ticket-validation-service/ticket-validation-service';
-import { ValidationResponse } from '../../app/core/models/ticket-validation.model';
+import { HistoricoItem, ValidationResponse } from '../../app/core/models/ticket-validation.model';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../auth/service/auth-service';
 
 @Component({
   selector: 'app-ticket-validation',
@@ -17,8 +18,13 @@ export class TicketValidation implements AfterViewInit {
   resultado: ValidationResponse | null = null;
   erroNaoEncontrado: boolean = false;
   carregando: boolean = false;
+  historico: HistoricoItem[] = [];
 
-  constructor(private ticketService: TicketValidationService) {}
+  constructor(
+    private ticketService: TicketValidationService, 
+    private authService: AuthService, 
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngAfterViewInit(): void {
     setTimeout(() => this.voucherInput.nativeElement.focus(), 0);
@@ -29,23 +35,53 @@ export class TicketValidation implements AfterViewInit {
   }
 
   validarIngresso(): void {
+    console.log('Passo 1: Iniciando validação para o código:', this.codigoVoucher);
     if (!this.codigoVoucher.trim()) return;
 
     this.carregando = true;
     this.resultado = null;
     this.erroNaoEncontrado = false;
 
-    // TODO: Obter o token real do serviço de autenticação
-    const token = 'token-temporario'; 
+    const token = this.authService.getToken() || '';
+    console.log('Passo 2: Chamando o serviço com o token');
 
     this.ticketService.validarIngresso(this.codigoVoucher, token).subscribe({
-      next: (response) => {
-        this.resultado = response;
+     next: (response) => {
+        console.log('Passo 3 [SUCESSO]:', response);
         this.carregando = false;
-        this.codigoVoucher = '';
+
+        try {
+          if (response.valido) {
+            this.resultado = response;
+            
+            if (response.dados_ingresso) {
+              const assentosFormatados = Array.isArray(response.dados_ingresso.assentos)
+                ? response.dados_ingresso.assentos.join(', ')
+                : response.dados_ingresso.assentos || 'Nenhum';
+
+              this.historico.unshift({
+                codigo: this.codigoVoucher,
+                filme: response.dados_ingresso.filme,
+                assentos: assentosFormatados
+              });
+            }
+            this.codigoVoucher = ''; 
+          } else {
+            const msg = response.mensagem?.toLowerCase() || '';
+            if (msg.includes('não encontrado') || msg.includes('inválido')) {
+              this.erroNaoEncontrado = true;
+            } else {
+              this.resultado = response; 
+            }
+          }
+        } catch (e) {
+          console.error('Erro interno ao ler a resposta:', e);
+        }
+
+        this.cdr.detectChanges();
       },
       error: (err) => {
-        this.erroNaoEncontrado = true;
+        console.error('Passo 3 [ERRO]: Falha capturada pelo Angular', err);
         this.carregando = false;
       }
     });

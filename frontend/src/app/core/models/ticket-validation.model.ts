@@ -16,3 +16,9 @@ export interface ValidationResponse {
   mensagem: string;
   dados_ingresso?: TicketData;
 }
+
+export interface HistoricoItem {
+  codigo: string;
+  filme: string;
+  assentos: string;
+}

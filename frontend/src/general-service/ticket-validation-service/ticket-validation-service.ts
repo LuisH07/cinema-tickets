@@ -7,7 +7,7 @@ import { ValidationRequest, ValidationResponse } from '../../app/core/models/tic
 @Injectable({ providedIn: 'root' })
 export class TicketValidationService {
 
-  private apiUrl = `${environment.apiUrl}/ingressos/validações`; 
+  private apiUrl = `${environment.apiUrl}/ingressos/validacoes`; 
 
   constructor(private http: HttpClient) {}
 

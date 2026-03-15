@@ -5,8 +5,8 @@
     <input 
       #voucherInput
       type="text" 
-      [(ngModel)]="codigoVoucher" 
-      (input)="aoDigitar()"
+      [ngModel]="codigoVoucher" 
+      (ngModelChange)="codigoVoucher = $event.toUpperCase()"
       (keyup.enter)="validarIngresso()"
       placeholder="Ex: CINE-9988-XP"
     />
@@ -17,7 +17,6 @@
 
   @if (resultado; as res) {
     <div class="resultado-section">
-      
       @if (res.valido && res.dados_ingresso) {
         <div class="card card-sucesso">
           <h3>✅ Acesso Liberado</h3>
@@ -45,4 +44,23 @@
       </div>
     </div>
   }
+
+  <div class="historico-section">
+    <h3>Últimos Ingressos Validados</h3>
+    
+    <div class="historico-lista">
+      @for (item of historico; track item.codigo) {
+        <div class="historico-item">
+          <span class="status-icon">✅</span>
+          <div class="historico-info">
+            <strong>{{ item.filme }}</strong>
+            <span>Assentos: {{ item.assentos }}</span>
+          </div>
+        </div>
+      } @empty {
+        <p class="historico-vazio">Nenhum ingresso validado nesta sessão.</p>
+      }
+    </div>
+  </div>
+
 </div>

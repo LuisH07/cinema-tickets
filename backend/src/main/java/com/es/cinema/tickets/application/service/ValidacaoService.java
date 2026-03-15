@@ -29,8 +29,7 @@ public class ValidacaoService {
 
     @Transactional
     public ValidacaoIngressoResponse validar(String codigoVoucher) {
-        Optional<Ingresso> optional = ingressoRepository
-                .findByCodigoAutenticacaoComDetalhes(codigoVoucher);
+        Optional<Ingresso> optional = ingressoRepository.findByCodigoComDetalhes(codigoVoucher);
 
         if (optional.isEmpty()) {
             log.warn("Tentativa de validação com código inválido");
