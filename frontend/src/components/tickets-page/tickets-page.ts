@@ -163,8 +163,6 @@ export class TicketsPage implements OnInit {
       if (response && Array.isArray(response)) {
         this.tickets = response;
         this.sortTickets();
-        this.tickets[0].status = "UTILIZADO";
-        console.log('Tickets carregados:', this.tickets.length);
       } else {
         throw new Error('Resposta inválida do servidor');
       }
@@ -210,25 +208,8 @@ export class TicketsPage implements OnInit {
   }
 
   isDatePassed(date: string, horario: string): boolean {
-    console.log('=== DEBUG isDatePassed ===');
-    console.log('Data recebida (string):', date);
-    console.log('Horário recebido:', horario);
-    
-    // Cria data do ticket (assumindo que a data vem no formato ISO ou yyyy-mm-dd)
     const ticketDateTime = new Date(`${date}T${horario}:00`);
-    
-    console.log('TicketDateTime (objeto Date):', ticketDateTime);
-    console.log('TicketDateTime ISO:', ticketDateTime.toISOString());
-    console.log('TicketDateTime local:', ticketDateTime.toString());
-    
     const now = new Date();
-    console.log('Agora (objeto Date):', now);
-    console.log('Agora ISO:', now.toISOString());
-    console.log('Agora local:', now.toString());
-    
-    console.log('Ticket < agora?', ticketDateTime < now);
-    console.log('==========================');
-    
     return ticketDateTime < now;
   }
 
