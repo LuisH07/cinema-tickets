@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @Table(name = "sessoes")
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Sessao {
 
     @Id

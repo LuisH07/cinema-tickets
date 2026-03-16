@@ -76,7 +76,7 @@ public class Filme {
     @Column(nullable = false)
     private StatusFilme status;
 
-    @Column(nullable = false, precision = 3, scale = 2)
+    @Column(nullable = false)
     @Builder.Default
     private Double mediaAvaliacao = 0.0;
 
@@ -86,7 +86,7 @@ public class Filme {
 
     public void registrarAvaliacao(int nota) {
         this.mediaAvaliacao = (this.mediaAvaliacao * this.qtdAvaliacoes + nota)
-                / (double) (this.qtdAvaliacoes + 1);
+                / (this.qtdAvaliacoes + 1);
         this.qtdAvaliacoes++;
     }
 
