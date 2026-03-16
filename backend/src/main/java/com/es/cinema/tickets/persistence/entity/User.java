@@ -10,8 +10,8 @@ import lombok.*;
 @Table(name = "users")
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
