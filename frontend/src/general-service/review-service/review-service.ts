@@ -14,6 +14,11 @@ export class ReviewService {
   async avaliarTicket(ticketId: string, nota: number): Promise<any> {
     const token = this.authService.getToken();
 
+    const body = {
+      ingressoId: ticketId,
+      nota: nota
+    };
+
     const response = await fetch(`${this.baseUrl}/avaliacoes`, {
       method: 'POST',
       headers: {
@@ -21,7 +26,7 @@ export class ReviewService {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        ticketId: ticketId,
+        ingresso_id: ticketId,
         nota: nota
       })
     });
