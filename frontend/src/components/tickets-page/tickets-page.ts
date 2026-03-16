@@ -32,16 +32,16 @@ import { Ticket } from '../../app/core/models/ticket.model';
           <div
             class="ticket-card"
             *ngFor="let ticket of sortedTickets; trackBy: trackByTicket"
-            [class.ticket-card--past]="isDatePassed(ticket.data, ticket.horario)"
-            [class.ticket-card--with-rating]="ticket.status === 'UTILIZADO' || ticket.status === 'AVALIADO'"
+            [class.ticket-card--past]="isDatePassed(ticket.data, ticket.horario) && ticket.status !== 'utilizado'"
+            [class.ticket-card--with-rating]="(ticket.status === 'utilizado' || ticket.status === 'avaliado') && isDatePassed(ticket.data, ticket.horario)"
           >
-            <div class="ticket-header" [class.ticket-header--past]="isDatePassed(ticket.data, ticket.horario)">
+            <div class="ticket-header" [class.ticket-header--past]="isDatePassed(ticket.data, ticket.horario) && ticket.status !== 'utilizado'">
               <span class="ticket-id">{{ ticket.id }}</span>
               <span
                 class="ticket-status"
                 [class.ticket-status--confirmed]="ticket.status === 'confirmado'"
-                [class.ticket-status--used]="ticket.status === 'UTILIZADO'"
-                [class.ticket-status--rated]="ticket.status === 'AVALIADO'"
+                [class.ticket-status--used]="ticket.status === 'utilizado'"
+                [class.ticket-status--rated]="ticket.status === 'avaliado'"
               >
                 {{ ticket.status }}
               </span>
@@ -81,8 +81,8 @@ import { Ticket } from '../../app/core/models/ticket.model';
             >
               {{ isDatePassed(ticket.data, ticket.horario) ? 'Sessão Encerrada' : 'Baixar Ingresso' }}
             </button>
-            <div class="ticket-footer" *ngIf="ticket.status === 'UTILIZADO' || ticket.status === 'AVALIADO'">
-              <div class="rating-section" *ngIf="ticket.status === 'UTILIZADO'">
+            <div class="ticket-footer" *ngIf="(ticket.status === 'utilizado' || ticket.status === 'avaliado') && isDatePassed(ticket.data, ticket.horario)">
+              <div class="rating-section" *ngIf="ticket.status === 'utilizado'">
                 <div class="rating-container">
                   <span class="rating-label">Avalie o filme:</span>
                   <div class="stars-container">
@@ -109,7 +109,7 @@ import { Ticket } from '../../app/core/models/ticket.model';
                 </div>
               </div>
 
-              <div class="rating-section rating-section--rated" *ngIf="ticket.status === 'AVALIADO'">
+              <div class="rating-section rating-section--rated" *ngIf="ticket.status === 'avaliado'">
                 <div class="rating-display">
                   <span class="rating-label">Filme avaliado:</span>
                   <span class="rated-message">✓ Obrigado pela sua avaliação!</span>
@@ -173,8 +173,8 @@ export class TicketsPage implements OnInit {
         : 'Não foi possível carregar seus ingressos.';
       this.tickets = [];
       this.sortedTickets = [];
-      console.error('Erro:', error);
     } finally {
+      console.log(this.tickets);
       this.isLoading = false;
       this.cdr.detectChanges();
     }
@@ -231,7 +231,6 @@ export class TicketsPage implements OnInit {
       await this.ingressoService.gerarPDF(dados);
 
     } catch (error) {
-      console.error('Erro ao gerar PDF:', error);
       alert('Erro ao gerar o PDF. Tente novamente.');
     }
   }
@@ -253,7 +252,6 @@ export class TicketsPage implements OnInit {
       await this.reviewService.avaliarTicket(ticket.id, rating);
       await this.loadData();
     } catch (error) {
-      console.error('Erro ao enviar avaliação:', error);
       alert('Erro ao enviar avaliação. Tente novamente.');
     } finally {
       this.isRatingLoading[ticket.id] = false;

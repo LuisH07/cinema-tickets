@@ -10,7 +10,7 @@ public class ValorDivergenteException extends ApiException {
     public ValorDivergenteException(BigDecimal esperado, BigDecimal calculado) {
         super(
                 "VALOR_DIVERGENTE",
-                HttpStatus.UNPROCESSABLE_ENTITY,
+                HttpStatus.UNPROCESSABLE_CONTENT,
                 "Valor inconsistente",
                 "O valor esperado R$ " + esperado + " diverge do valor calculado R$ " + calculado
         );

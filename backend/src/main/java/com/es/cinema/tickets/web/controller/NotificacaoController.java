@@ -1,10 +1,7 @@
 package com.es.cinema.tickets.web.controller;
 
-import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,12 +10,14 @@ import com.es.cinema.tickets.persistence.entity.Notificacao;
 import com.es.cinema.tickets.web.dto.request.NotificacaoRequest;
 import com.es.cinema.tickets.web.dto.response.NotificacaoResponse;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/notificacoes")
 public class NotificacaoController {
 
-    @Autowired
-    private NotificacaoService service;
+    private final NotificacaoService service;
 
     @PostMapping("/agendar")
     public ResponseEntity<NotificacaoResponse> agendar(@RequestBody NotificacaoRequest request) {

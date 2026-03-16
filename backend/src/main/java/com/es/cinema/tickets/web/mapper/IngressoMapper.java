@@ -8,7 +8,6 @@ import com.es.cinema.tickets.web.dto.response.IngressoDetalheResponse;
 import com.es.cinema.tickets.web.dto.response.IngressoResumoResponse;
 import org.springframework.stereotype.Component;
 
-import java.util.Comparator;
 import java.util.List;
 
 @Component

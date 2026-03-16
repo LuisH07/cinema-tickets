@@ -6,7 +6,9 @@ import com.es.cinema.tickets.persistence.repository.NotificacaoRepository;
 import com.es.cinema.tickets.persistence.repository.SessaoRepository;
 import com.es.cinema.tickets.web.dto.request.NotificacaoRequest;
 import com.es.cinema.tickets.web.dto.response.NotificacaoResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,13 +18,11 @@ import java.time.ZoneId;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class NotificacaoService {
 
-    @Autowired
-    private NotificacaoRepository repository;
-
-    @Autowired
-    private SessaoRepository sessaoRepository; 
+    private final NotificacaoRepository repository;
+    private final SessaoRepository sessaoRepository; 
 
     @Transactional
     public NotificacaoResponse agendar(NotificacaoRequest dto) {
