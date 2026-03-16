@@ -20,6 +20,4 @@ public class AvaliacaoRequest {
     @Min(value = 1, message = "A nota mínima é 1")
     @Max(value = 5, message = "A nota máxima é 5")
     private Integer nota;
-
-    private String comentario;
 }
