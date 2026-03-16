@@ -82,7 +82,7 @@ export class Checkout implements OnInit {
 
       const mensagemSucesso =
         tempoAlerta > 0
-          ? `Pagamento aprovado! Enviaremos um lembrete ${tempoAlerta} min antes da sessão.`
+          ? `Pagamento aprovado! Enviaremos um lembrete ${tempoAlerta} minutos antes da sessão.`
           : 'Pagamento Confirmado! Seu ingresso está pronto.';
 
       Swal.fire({

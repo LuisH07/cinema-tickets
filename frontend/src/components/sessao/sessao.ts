@@ -73,6 +73,10 @@ import Swal from 'sweetalert2';
               <span class="error-text" *ngIf="dataInicio?.errors?.['dataPassada'] && (dataInicio?.touched || dataInicio?.dirty)">
                 Só é possível cadastrar sessões em datas futuras.
               </span>
+
+              <span class="error-text" *ngIf="dataInicio?.errors?.['horarioPassado'] && (dataInicio?.touched || dataInicio?.dirty)">
+                O horário selecionado para hoje já passou.
+              </span>
               
               <span class="error-text" *ngIf="dataInicio?.errors?.['required'] && dataInicio?.touched">
                 A data inicial é obrigatória.
@@ -126,15 +130,29 @@ export class Sessao implements OnInit {
 
   dataFuturaValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
-    
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0);
 
+    const hoje = new Date();
     const [ano, mes, dia] = control.value.split('-').map(Number);
     const dataInput = new Date(ano, mes - 1, dia);
+    
+    const hojeApenasData = new Date();
+    hojeApenasData.setHours(0, 0, 0, 0);
 
-    if (dataInput <= hoje) {
+    if (dataInput < hojeApenasData) {
       return { dataPassada: true };
+    }
+
+    if (dataInput.getTime() === hojeApenasData.getTime()) {
+      const horarioInput = control.parent?.get('horario')?.value;
+      
+      if (horarioInput) {
+        const [horas, minutos] = horarioInput.split(':').map(Number);
+        dataInput.setHours(horas, minutos);
+
+        if (dataInput < hoje) {
+          return { horarioPassado: true };
+        }
+      }
     }
 
     return null;
@@ -170,11 +188,14 @@ export class Sessao implements OnInit {
     if (this.sessaoForm.invalid) {
       this.sessaoForm.markAllAsTouched();
       
-      if (this.dataInicio?.errors?.['dataPassada']) {
+      const erroData = this.dataInicio?.errors?.['dataPassada'];
+      const erroHora = this.dataInicio?.errors?.['horarioPassado'];
+
+      if (erroData || erroHora) {
         Swal.fire({
           icon: 'warning',
-          title: 'Data Inválida',
-          text: 'Só é possível cadastrar sessões em datas futuras.',
+          title: 'Data ou Horário Inválido',
+          text: erroData ? 'Só é possível cadastrar sessões em datas futuras.' : 'Para sessões de hoje, o horário deve ser posterior ao atual.',
           confirmButtonColor: '#c91432'
         });
       }

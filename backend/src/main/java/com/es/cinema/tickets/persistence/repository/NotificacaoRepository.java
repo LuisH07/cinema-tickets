@@ -11,4 +11,6 @@ public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> 
     List<Notificacao> findByEnviadoFalseAndDataEnvioAgendadaBefore(LocalDateTime data);
 
     List<Notificacao> findByDeviceTokenOrderByDataEnvioAgendadaDesc(String deviceToken);
+
+    List<Notificacao> findByUsuarioIdOrderByDataEnvioAgendadaDesc(Long usuarioId);
 }
