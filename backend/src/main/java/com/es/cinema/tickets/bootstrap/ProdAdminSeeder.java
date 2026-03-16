@@ -3,6 +3,7 @@ package com.es.cinema.tickets.bootstrap;
 import com.es.cinema.tickets.persistence.entity.User;
 import com.es.cinema.tickets.persistence.enums.Role;
 import com.es.cinema.tickets.persistence.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +40,7 @@ public class ProdAdminSeeder implements ApplicationRunner {
     private String celular;
 
     @Override
+    @Transactional
     public void run(@NonNull ApplicationArguments args) {
         if (!enabled) return;
 
