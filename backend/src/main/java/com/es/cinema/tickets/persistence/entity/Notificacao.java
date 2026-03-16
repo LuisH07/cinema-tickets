@@ -20,6 +20,9 @@ public class Notificacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "usuario_id")
+    private Long usuarioId;
+
     @NotBlank
     @Column(name = "device_token", nullable = false)
     private String deviceToken;

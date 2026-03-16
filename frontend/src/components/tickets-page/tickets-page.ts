@@ -174,7 +174,6 @@ export class TicketsPage implements OnInit {
       this.tickets = [];
       this.sortedTickets = [];
     } finally {
-      console.log(this.tickets);
       this.isLoading = false;
       this.cdr.detectChanges();
     }

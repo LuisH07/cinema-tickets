@@ -25,7 +25,7 @@ public class NotificacaoService {
     private final SessaoRepository sessaoRepository; 
 
     @Transactional
-    public NotificacaoResponse agendar(NotificacaoRequest dto) {
+    public NotificacaoResponse agendar(NotificacaoRequest dto, Long usuarioId) {
         Sessao sessao = sessaoRepository.findWithFilmeAndSalaById(dto.sessaoId())
                 .orElseThrow(() -> new RuntimeException("Sessão não encontrada com ID: " + dto.sessaoId()));
 
@@ -42,6 +42,7 @@ public class NotificacaoService {
         );
 
         Notificacao n = Notificacao.builder()
+                .usuarioId(usuarioId) 
                 .deviceToken(dto.deviceToken())
                 .dataEnvioAgendada(horarioNotificacao)
                 .sessaoId(dto.sessaoId())
@@ -63,11 +64,10 @@ public class NotificacaoService {
     }
 
     @Transactional(readOnly = true)
-    public List<Notificacao> listarPorToken(String deviceToken) {
+    public List<Notificacao> listarPorUsuario(Long usuarioId) {
         LocalDateTime agora = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
         
-        // Retorna apenas notificações com a data/hora agendada no passado ou no exato momento atual
-        return repository.findByDeviceTokenOrderByDataEnvioAgendadaDesc(deviceToken)
+        return repository.findByUsuarioIdOrderByDataEnvioAgendadaDesc(usuarioId)
                 .stream()
                 .filter(n -> !n.getDataEnvioAgendada().isAfter(agora))
                 .toList();

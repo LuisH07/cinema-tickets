@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { AuthService } from '../../auth/service/auth-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
   private readonly baseUrl = `${environment.apiUrl}/notificacoes`;
+  
+  private readonly authService = inject(AuthService); 
 
-  // Gera um token local apenas para associar a notificação ao navegador atual
   private getDeviceToken(): string {
     let token = localStorage.getItem('deviceToken');
     if (!token) {
@@ -24,18 +26,10 @@ export class NotificationService {
   }): Promise<any> {
     try {
       const localToken = this.getDeviceToken();
-
-      // Busca o token tanto no localStorage quanto no sessionStorage
-      let authToken = localStorage.getItem('token') || sessionStorage.getItem('token');
-
-      // Remove possíveis aspas extras caso o token tenha sido salvo com JSON.stringify
-      if (authToken && authToken.startsWith('"')) {
-        authToken = authToken.replace(/^"|"$/g, '');
-      }
       
+      const authToken = this.authService.getToken(); 
+
       if (!authToken) {
-        console.error('🔍 Chaves no Local Storage:', Object.keys(localStorage));
-        console.error('🔍 Chaves no Session Storage:', Object.keys(sessionStorage));
         throw new Error('Usuário não autenticado. Token não encontrado.');
       }
 
@@ -45,14 +39,14 @@ export class NotificationService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${authToken}`, // Adiciona o token JWT no cabeçalho
+          Authorization: `Bearer ${authToken}`, 
         },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
         const errorData = await response.text();
-        console.error('❌ Erro 400 do backend. Detalhes:', errorData);
+        console.error('Erro 400 do backend. Detalhes:', errorData);
         throw new Error('Erro ao salvar agendamento no back');
       }
 
@@ -65,19 +59,22 @@ export class NotificationService {
 
   async listarNotificacoes(): Promise<any[]> {
     try {
-      const localToken = this.getDeviceToken();
+      const authToken = this.authService.getToken(); 
 
-      let authToken = localStorage.getItem('token') || sessionStorage.getItem('token');
-      if (authToken && authToken.startsWith('"')) authToken = authToken.replace(/^"|"$/g, '');
+      if (!authToken) return [];
 
-      const response = await fetch(`${this.baseUrl}/${localToken}`, {
+      const response = await fetch(`${this.baseUrl}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${authToken}`
         }
       });
 
-      if (!response.ok) return [];
+      if (!response.ok) {
+         if (response.status === 401 || response.status === 403) return [];
+         throw new Error('Erro ao buscar notificações');
+      }
+      
       return response.json();
     } catch (error) {
       console.error('Erro ao listar notificações', error);
@@ -87,8 +84,9 @@ export class NotificationService {
 
   async marcarComoVista(id: number): Promise<void> {
     try {
-      let authToken = localStorage.getItem('token') || sessionStorage.getItem('token');
-      if (authToken && authToken.startsWith('"')) authToken = authToken.replace(/^"|"$/g, '');
+      const authToken = this.authService.getToken(); 
+
+      if (!authToken) return;
 
       await fetch(`${this.baseUrl}/${id}/visto`, {
         method: 'PATCH',
