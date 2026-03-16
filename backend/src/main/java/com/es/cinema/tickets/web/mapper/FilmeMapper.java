@@ -32,6 +32,8 @@ public class FilmeMapper {
                 .sinopse(filme.getSinopse())
                 .elenco(filme.getElenco())
                 .status(filme.getStatus())
+                .mediaAvaliacao(filme.getMediaAvaliacao())
+                .qtdAvaliacoes(filme.getQtdAvaliacoes())
                 .build();
     }
 

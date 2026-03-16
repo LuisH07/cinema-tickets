@@ -20,4 +20,6 @@ public class FilmeResponse {
     private String sinopse;
     private List<String> elenco;
     private StatusFilme status;
+    private Double mediaAvaliacao;
+    private Integer qtdAvaliacoes;
 }
