@@ -1,7 +1,7 @@
 .checkout-wrapper {
   background-color: #fdfdfd;
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: center;
   padding: 20px;
 }
@@ -10,10 +10,10 @@
   width: 100%;
   max-width: 1100px;
   display: flex; /* Garante o alinhamento horizontal */
-  flex-direction: row; 
+  flex-direction: row;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   border: 1px solid #eee;
 }
@@ -27,18 +27,17 @@
 .poster-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Faz a imagem preencher o espaço sem distorcer */
+  object-fit: cover; 
   display: block;
 }
 
-/* Coluna 2: Informações do Filme */
 .movie-text-info {
-  flex: 1; /* Ocupa o espaço central */
+  flex: 1; 
   padding: 30px;
   border-right: 1px solid #eee;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centraliza o texto verticalmente ao lado do poster */
+  justify-content: center; 
 }
 
 .movie-text-info h2 {
@@ -101,6 +100,40 @@
   font-size: 2.2rem;
   color: #c91432;
   display: block;
+}
+
+.notificacao-container {
+  margin-top: 15px;
+  margin-bottom: 25px;
+  padding: 18px;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.notificacao-container label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.form-select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #444;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+
+.form-select:focus {
+  border-color: #c91432;
 }
 
 .btn-confirm {

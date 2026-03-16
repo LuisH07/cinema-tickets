@@ -1,0 +1,29 @@
+<div class="notification-container">
+  <button class="notification-btn" (click)="toggleDropdown()">
+    <i class="fa-solid fa-bell"></i>
+    <span class="badge" *ngIf="notificacoesPendentes > 0">
+      {{ notificacoesPendentes }}
+    </span>
+  </button>
+
+  <div class="notification-dropdown" *ngIf="dropdownAberto">
+    <div class="dropdown-header">
+      <span>Notificações</span>
+      <button class="btn-limpar" (click)="limparTudo()">Limpar</button>
+    </div>
+
+    <div class="dropdown-content">
+      <div *ngIf="notificacoes.length === 0" class="empty-state">Nenhuma nova notificação</div>
+
+      <div
+        class="notification-item"
+        *ngFor="let n of notificacoes"
+        [class.unread]="!n.lida"
+        (click)="marcarComoLida(n)"
+      >
+        <p class="msg">{{ n.mensagem }}</p>
+        <span class="time">{{ n.horario | date: 'HH:mm' }}</span>
+      </div>
+    </div>
+  </div>
+</div>

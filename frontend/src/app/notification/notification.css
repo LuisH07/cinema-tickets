@@ -1,0 +1,135 @@
+:host {
+  display: block;
+}
+
+.notification-container {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-btn {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  position: relative;
+  color: #333;
+  padding: 8px;
+  transition: color 0.2s;
+}
+
+.notification-btn:hover {
+  color: #c91432;
+}
+
+.badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #c91432;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 5px;
+  font-size: 0.65rem;
+  font-weight: bold;
+  border: 2px solid white;
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 320px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  z-index: 1000;
+  margin-top: 15px;
+  overflow: hidden; /* Garante que os itens não saiam do arredondamento */
+  border: 1px solid #eee;
+}
+
+.dropdown-header {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-header span {
+  font-weight: 700;
+  color: #333;
+}
+
+.btn-limpar {
+  background: none;
+  border: none;
+  color: #c91432;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-limpar:hover {
+  text-decoration: underline;
+}
+
+.dropdown-content {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.empty-state {
+  padding: 30px;
+  text-align: center;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.notification-item {
+  padding: 15px;
+  border-bottom: 1px solid #f1f1f1;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.notification-item:hover {
+  background-color: #fff5f6;
+}
+
+.notification-item.unread {
+  background-color: #fcfcfc;
+  border-left: 4px solid #c91432;
+}
+
+.msg {
+  margin: 0 0 5px 0;
+  font-size: 0.9rem;
+  color: #444;
+  line-height: 1.4;
+}
+
+.time {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.dropdown-footer {
+  padding: 12px;
+  text-align: center;
+  background-color: #f8f9fa;
+  border-top: 1px solid #eee;
+}
+
+.dropdown-footer a {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.dropdown-footer a:hover {
+  color: #333;
+}

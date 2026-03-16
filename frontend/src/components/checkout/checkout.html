@@ -34,8 +34,19 @@
         </label>
       </div>
 
+      <div class="notificacao-container" *ngIf="compra">
+        <label for="reminder">Deseja receber um lembrete antes do filme?</label>
+        <select id="reminder" [(ngModel)]="minutosLembrete" name="minutosLembrete" class="form-select">
+          <option [value]="0">Não notificar</option>
+          <option [value]="15">15 minutos antes</option>
+          <option [value]="30">30 minutos antes</option>
+          <option [value]="60">1 hora antes</option>
+          <option [value]="120">2 horas antes</option>
+        </select>
+      </div>
+
       <button class="btn-confirm" (click)="processarPagamento()" [disabled]="isProcessing">
-        FINALIZAR COMPRA
+        {{ isProcessing ? 'Processando...' : 'FINALIZAR PAGAMENTO' }}
       </button>
     </div>
 
