@@ -21,7 +21,7 @@ export class ReviewService {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        ticketId: ticketId,
+        ingresso_id: ticketId,
         nota: nota
       })
     });

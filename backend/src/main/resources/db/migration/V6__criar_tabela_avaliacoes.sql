@@ -5,7 +5,7 @@ ALTER TABLE ingressos
         CHECK (status IN ('CONFIRMADO', 'UTILIZADO', 'CANCELADO', 'AVALIADO'));
 
 ALTER TABLE filmes
-    ADD COLUMN media_avaliacao NUMERIC(3, 2) NOT NULL DEFAULT 0.00,
+    ADD COLUMN media_avaliacao FLOAT DEFAULT 0.0,
     ADD COLUMN qtd_avaliacoes  INT           NOT NULL DEFAULT 0;
 
 ALTER TABLE filmes
