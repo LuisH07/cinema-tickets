@@ -75,8 +75,10 @@ class AvaliacaoServiceTest {
         AvaliacaoRequest request = new AvaliacaoRequest("ABC123", 5);
         when(ingressoRepository.findByCodigoComDetalhes("ABC123")).thenReturn(Optional.empty());
 
+        Long usuarioId = usuario.getId();
+
         assertThrows(IngressoNotFoundException.class,
-                () -> avaliacaoService.registrar(request, usuario.getId()));
+                () -> avaliacaoService.registrar(request, usuarioId));
     }
 
     @Test
@@ -94,8 +96,10 @@ class AvaliacaoServiceTest {
         ingresso.setStatus(StatusIngresso.CONFIRMADO);
         when(ingressoRepository.findByCodigoComDetalhes("ABC123")).thenReturn(Optional.of(ingresso));
 
+        Long usuarioId = usuario.getId();
+
         assertThrows(IngressoNaoUtilizadoException.class,
-                () -> avaliacaoService.registrar(request, usuario.getId()));
+                () -> avaliacaoService.registrar(request, usuarioId));
     }
 
     @Test
@@ -104,19 +108,23 @@ class AvaliacaoServiceTest {
         ingresso.setStatus(StatusIngresso.AVALIADO);
         when(ingressoRepository.findByCodigoComDetalhes("ABC123")).thenReturn(Optional.of(ingresso));
 
+        Long usuarioId = usuario.getId();
+
         assertThrows(IngressoJaAvaliadoException.class,
-                () -> avaliacaoService.registrar(request, usuario.getId()));
+                () -> avaliacaoService.registrar(request, usuarioId));
     }
 
     @Test
     void registrar_shouldThrow_whenSessaoNaoEncerrada() {
         AvaliacaoRequest request = new AvaliacaoRequest("ABC123", 5);
-        pedido.getSessao().setInicio(LocalDateTime.now().plusHours(1)); // sessão futura
+        pedido.getSessao().setInicio(LocalDateTime.now().plusHours(1));
         ingresso.setStatus(StatusIngresso.UTILIZADO);
         when(ingressoRepository.findByCodigoComDetalhes("ABC123")).thenReturn(Optional.of(ingresso));
 
+        Long usuarioId = usuario.getId();
+
         assertThrows(IngressoNaoUtilizadoException.class,
-                () -> avaliacaoService.registrar(request, usuario.getId()));
+                () -> avaliacaoService.registrar(request, usuarioId));
     }
 
     @Test
