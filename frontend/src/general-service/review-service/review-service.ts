@@ -14,7 +14,7 @@ export class ReviewService {
   async avaliarTicket(ticketId: string, nota: number): Promise<any> {
     const token = this.authService.getToken();
 
-    const response = await fetch(`${this.baseUrl}/avaliacao`, {
+    const response = await fetch(`${this.baseUrl}/avaliacoes`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

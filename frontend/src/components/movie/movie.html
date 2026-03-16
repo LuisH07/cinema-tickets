@@ -84,7 +84,7 @@
                     <p class="no-sessions-message">Nenhuma sessão disponível para a data selecionada.</p>
                 }
             </div>
-            @if (movie?.nota !== undefined && movie?.nota !== null) {
+            @if (movie && movie.nota != null) {
                 <div class="rating">
                     <div class="stars-outer">
                         <div class="stars-inner" [style.width.%]="movie.nota * 20"></div>
