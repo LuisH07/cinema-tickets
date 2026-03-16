@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../auth/service/auth-service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { NavbarComponent } from '../../../app/notification/notification';
 
 @Component({
   selector: 'app-header',
   standalone: true, // Adicionado caso ainda não estivesse
-  imports: [ CommonModule, RouterModule ],
+  imports: [ CommonModule, RouterModule, NavbarComponent ],
   template: `
     <header class="header">
       <div class="main-header">
@@ -32,11 +33,15 @@ import { Router, RouterModule } from '@angular/router';
                   <i class="fa-solid fa-ticket"></i>
                   <span class="session-text"> Validar Ingresso </span>
                 </button>
+                
+                <app-notification></app-notification>tashed changes
               } @else if (router.url !== '/ingressos') {
                 <button type="button" class="tickets-button" [routerLink]="['/ingressos']">
                   <span class="login-text">Ingressos</span>
                   <i class="fa-solid fa-ticket"></i>
                 </button>
+
+                
               }
               <button type="button" class="logout-button" (click)="onLogout()">
                 <span class="logout-text"> Sair </span>
